@@ -45,7 +45,7 @@ class DeviceModels {
 	public static function identify( $type, $model ) {
 		require_once __DIR__ . '/../../data/models-' . $type . '.php';
 
-		if ( $type != 'blackberry' && $type != 'ios' ) {
+		if ( 'blackberry' != $type  && 'ios' != $type ) {
 			require_once __DIR__ . '/../../data/indices/models-' . $type . '.php';
 		}
 
@@ -163,7 +163,7 @@ class DeviceModels {
 
 		if ( ! $result->identified ) {
 			$model = self::cleanup( $model );
-			if ( preg_match( '/AndroVM/iu', $model )  || $model == 'Emulator' || $model == 'x86 Emulator' || $model == 'x86 VirtualBox' || $model == 'vm' ) {
+			if ( preg_match( '/AndroVM/iu', $model )  || 'Emulator' == $model || 'x86 Emulator' == $model || 'x86 VirtualBox' == $model || 'vm' == $model ) {
 				return new Device([
 					'type'          => Constants\DeviceType::EMULATOR,
 					'identified'    => Constants\Id::PATTERN,
@@ -240,7 +240,7 @@ class DeviceModels {
 								$device->carrier = $match['carrier'];
 							}
 
-							if ( $device->manufacturer == null && $device->model == null ) {
+							if ( is_null($device->manufacturer) && is_null($device->model) ) {
 								$device->identified = Constants\Id::PATTERN;
 							}
 

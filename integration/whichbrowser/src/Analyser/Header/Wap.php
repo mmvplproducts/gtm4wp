@@ -12,7 +12,7 @@ class Wap {
 
 		$header = trim( $header );
 
-		if ( $header[0] == '"' ) {
+		if ( '"' == $header[0] ) {
 			$header = explode( ',', $header );
 			$header = trim( $header[0], '"' );
 		}

@@ -326,7 +326,7 @@ trait Os {
 		if ( preg_match( '/\(Linux; (?:U; )?(?:([0-9.]+); )?(?:[a-zA-Z][a-zA-Z](?:[-_][a-zA-Z][a-zA-Z])?; )?([^;]+) Build/u', $ua, $match ) ) {
 			$falsepositive = false;
 
-			if ( $match[2] == 'OpenTV' ) {
+			if ( 'OpenTV' == $match[2] ) {
 				$falsepositive = true;
 			}
 
@@ -553,12 +553,12 @@ trait Os {
 			if ( preg_match( '/Build\/([^\);]+)/u', $ua, $match ) ) {
 				$version = Data\BuildIds::identify( $match[1] );
 				if ( $version ) {
-					if ( ! isset( $this->data->os->version ) || $this->data->os->version == null || $this->data->os->version->value == null || $version->toFloat() < $this->data->os->version->toFloat() ) {
+					if ( ! isset( $this->data->os->version ) || is_null( $this->data->os->version ) || is_null( $this->data->os->version->value ) || $version->toFloat() < $this->data->os->version->toFloat() ) {
 						$this->data->os->version = $version;
 					}
 
 					/* Special case for Android L */
-					if ( $version->toFloat() == 5 ) {
+					if ( 5 == $version->toFloat() ) {
 						$this->data->os->version = $version;
 					}
 				}
@@ -999,13 +999,13 @@ trait Os {
 				}
 
 				if ( isset( $this->data->device->manufacturer ) && isset( $this->data->device->model ) ) {
-					if ( $this->data->device->manufacturer == 'ARM' && $this->data->device->model == 'Touch' ) {
+					if ( 'ARM' == $this->data->device->manufacturer && 'Touch' == $this->data->device->model ) {
 						$this->data->device->manufacturer = null;
 						$this->data->device->model = null;
 						$this->data->device->identified = Constants\Id::NONE;
 					}
 
-					if ( $this->data->device->model == 'XDeviceEmulator' ) {
+					if ( 'XDeviceEmulator' == $this->data->device->model ) {
 						$this->data->device->manufacturer = null;
 						$this->data->device->model = null;
 						$this->data->device->type = Constants\DeviceType::EMULATOR;
@@ -1111,7 +1111,7 @@ trait Os {
 			$this->data->device->type = Constants\DeviceType::MOBILE;
 
 			if ( preg_match( '/\(([^;]+); ([^\/]+)\//u', $ua, $match ) ) {
-				if ( $match[1] != 'Bada' ) {
+				if ( 'Bada' != $match[1] ) {
 					$this->data->device->manufacturer = $match[1];
 					$this->data->device->model = $match[2];
 					$this->data->device->identified = Constants\Id::PATTERN;
@@ -1143,13 +1143,13 @@ trait Os {
 				if ( strtoupper( $match[1] ) == 'SMART-TV' ) {
 					$falsepositive = true;
 				}
-				if ( $match[1] == 'TV' ) {
+				if ( 'TV' == $match[1] ) {
 					$falsepositive = true;
 				}
-				if ( $match[1] == 'Linux' ) {
+				if ( 'Linux' == $match[1] ) {
 					$falsepositive = true;
 				}
-				if ( $match[1] == 'Tizen' ) {
+				if ( 'Tizen' == $match[1] ) {
 					$falsepositive = true;
 				}
 
@@ -1169,13 +1169,13 @@ trait Os {
 
 			if ( preg_match( '/\s*([^;]+);\s+([^;\)]+)\)/u', $ua, $match ) ) {
 				$falsepositive = false;
-				if ( $match[1] == 'U' ) {
+				if ( 'U' == $match[1] ) {
 					$falsepositive = true;
 				}
-				if ( substr( $match[2], 0, 5 ) == 'Tizen' ) {
+				if ( 'Tizen' == substr( $match[2], 0, 5 ) ) {
 					$falsepositive = true;
 				}
-				if ( substr( $match[2], 0, 11 ) == 'AppleWebKit' ) {
+				if ( 'AppleWebKit' == substr( $match[2], 0, 11 ) ) {
 					$falsepositive = true;
 				}
 				if ( preg_match( '/^[a-z]{2,2}(?:\-[a-z]{2,2})?$/', $match[2] ) ) {
@@ -1291,7 +1291,7 @@ trait Os {
 
 		if ( $this->data->os->isFamily( 'Symbian' ) ) {
 			if ( preg_match( '/Nokia-?([^\/;\)\s]+)[\s|\/|;|\)]/u', $ua, $match ) ) {
-				if ( $match[1] != 'Browser' ) {
+				if ( 'Browser' != $match[1] ) {
 					$this->data->device->manufacturer = 'Nokia';
 					$this->data->device->model = Data\DeviceModels::cleanup( $match[1] );
 					$this->data->device->identified |= Constants\Id::PATTERN;
@@ -1452,7 +1452,7 @@ trait Os {
 
 		if ( preg_match( '/ (Pre|Pixi|TouchPad|P160UN?A?)\/[0-9\.]+$/u', $ua, $match ) ) {
 			$this->data->os->name = 'webOS';
-			$this->data->device->type = $match[1] == 'TouchPad' ? Constants\DeviceType::TABLET : Constants\DeviceType::MOBILE;
+			'TouchPad' == $this->data->device->type = $match[1] ? Constants\DeviceType::TABLET : Constants\DeviceType::MOBILE;
 			$this->data->device->generic = false;
 		}
 
@@ -1564,15 +1564,15 @@ trait Os {
 			$this->data->device->manufacturer = 'BlackBerry';
 			$this->data->device->model = $match[2];
 
-			if ( $this->data->device->model == 'Kbd' ) {
+			if ( 'Kbd' == $this->data->device->model ) {
 				$this->data->device->model = 'Q series or Passport';
 			}
 
-			if ( $this->data->device->model == 'Touch' ) {
+			if ( 'Touch' == $this->data->device->model ) {
 				$this->data->device->model = 'A or Z series';
 			}
 
-			if ( $this->data->device->model == 'STL100-2' ) {
+			if ( 'STL100-2' == $this->data->device->model ) {
 				$this->data->device->model = 'Z10';
 			}
 

@@ -14,7 +14,7 @@ class Manufacturers {
 
 		require_once __DIR__ . '/../../data/manufacturer-names.php';
 
-		if ( $type == Constants\DeviceType::TELEVISION ) {
+		if ( Constants\DeviceType::TELEVISION == $type ) {
 			if ( isset( Manufacturers::$TELEVISION[ $name ] ) ) {
 				return self::$TELEVISION[ $name ];
 			}

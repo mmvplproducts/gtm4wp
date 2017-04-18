@@ -111,7 +111,7 @@ trait Header {
 	private function additionalUserAgent( $ua ) {
 		$extra = new Parser( $ua );
 
-		if ( $extra->device->type != Constants\DeviceType::DESKTOP ) {
+		if ( Constants\DeviceType::DESKTOP != $extra->device->type ) {
 			if ( isset( $extra->os->name ) ) {
 				$this->data->os = $extra->os;
 			}

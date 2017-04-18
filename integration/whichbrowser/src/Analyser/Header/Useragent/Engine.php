@@ -114,7 +114,7 @@ trait Engine {
 			$this->data->engine->name = 'Trident';
 			$this->data->engine->version = new Version( [ 'value' => $match[1] ] );
 
-			if ( isset( $this->data->browser->version ) && isset( $this->data->browser->name ) && $this->data->browser->name == 'Internet Explorer' ) {
+			if ( isset( $this->data->browser->version ) && isset( $this->data->browser->name ) && 'Internet Explorer'  == $this->data->browser->name ) {
 				if ( $this->data->engine->version->toNumber() >= 7 && $this->data->browser->version->toFloat() < 11 ) {
 					$this->data->browser->version = new Version( [ 'value' => '11.0' ] );
 					$this->data->browser->mode = 'compat';
@@ -136,7 +136,7 @@ trait Engine {
 				}
 			}
 
-			if ( isset( $this->data->os->version ) && isset( $this->data->os->name ) && $this->data->os->name == 'Windows Phone' && isset( $this->data->browser->name ) && $this->data->browser->name == 'Mobile Internet Explorer' ) {
+			if ( isset( $this->data->os->version ) && isset( $this->data->os->name ) && 'Windows Phone' == $this->data->os->name && isset( $this->data->browser->name ) && 'Mobile Internet Explorer' == $this->data->browser->name ) {
 				if ( $this->data->engine->version->toNumber() == 7 && $this->data->os->version->toFloat() < 8.1 ) {
 					$this->data->os->version = new Version( [ 'value' => '8.1', 'details' => 2 ] );
 				}

@@ -180,7 +180,7 @@ class Device extends Base {
 			$model = $this->getModel();
 			$manufacturer = $this->getManufacturer();
 
-			if ( $manufacturer != '' && strpos( $model, $manufacturer ) === 0 ) {
+			if ( '' != $manufacturer && 0 === strpos( $model, $manufacturer ) ) {
 				$manufacturer = '';
 			}
 

@@ -65,7 +65,7 @@ class Main {
 	 * @return boolean
 	 */
 
-	private function isX() {
+	private function is_x() {
 		$arguments = func_get_args();
 		$x = $arguments[0];
 
@@ -108,7 +108,7 @@ class Main {
 	public function isBrowser() {
 		$arguments = func_get_args();
 		array_unshift( $arguments, 'browser' );
-		return call_user_func_array( [ $this, 'isX' ], $arguments );
+		return call_user_func_array( [ $this, 'is_x' ], $arguments );
 	}
 
 
@@ -125,7 +125,7 @@ class Main {
 	public function isEngine() {
 		$arguments = func_get_args();
 		array_unshift( $arguments, 'engine' );
-		return call_user_func_array( [ $this, 'isX' ], $arguments );
+		return call_user_func_array( [ $this, 'is_x' ], $arguments );
 	}
 
 
@@ -142,7 +142,7 @@ class Main {
 	public function isOs() {
 		$arguments = func_get_args();
 		array_unshift( $arguments, 'os' );
-		return call_user_func_array( [ $this, 'isX' ], $arguments );
+		return call_user_func_array( [ $this, 'is_x' ], $arguments );
 	}
 
 
@@ -250,11 +250,11 @@ class Main {
 		$engine = $this->engine->toString();
 		$device = $this->device->toString();
 
-		if ( empty( $device ) && empty( $os ) && $this->device->type == 'television' ) {
+		if ( empty( $device ) && empty( $os ) && 'television' == $this->device->type ) {
 			$device = 'television';
 		}
 
-		if ( empty( $device ) && $this->device->type == 'emulator' ) {
+		if ( empty( $device ) && 'emulator' == $this->device->type ) {
 			$device = 'emulator';
 		}
 
@@ -282,7 +282,7 @@ class Main {
 			return $prefix . $this->a( $device );
 		}
 
-		if ( $this->device->type == 'desktop' && ! empty( $os ) && ! empty( $engine ) && empty( $device ) ) {
+		if ( 'desktop' == $this->device->type && ! empty( $os ) && ! empty( $engine ) && empty( $device ) ) {
 			return 'an unknown browser based on ' . $engine . ' running on ' . $os;
 		}
 
@@ -294,7 +294,7 @@ class Main {
 			return 'an unknown browser based on ' . $engine;
 		}
 
-		if ( $this->device->type == 'bot' ) {
+		if ( 'bot' == $this->device->type ) {
 			return 'an unknown bot';
 		}
 
