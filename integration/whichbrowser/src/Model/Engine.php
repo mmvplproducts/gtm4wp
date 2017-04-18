@@ -4,32 +4,31 @@ namespace WhichBrowser\Model;
 
 use WhichBrowser\Model\Primitive\NameVersion;
 
-class Engine extends NameVersion
-{
-    /**
-     * Get an array of all defined properties
-     *
-     * @internal
-     *
-     * @return array
-     */
+class Engine extends NameVersion {
 
-    public function toArray()
-    {
-        $result = [];
+	/**
+	 * Get an array of all defined properties
+	 *
+	 * @internal
+	 *
+	 * @return array
+	 */
 
-        if (!empty($this->name)) {
-            $result['name'] = $this->name;
-        }
-        
-        if (!empty($this->version)) {
-            $result['version'] = $this->version->toArray();
-        }
+	public function toArray() {
+		$result = [];
 
-        if (isset($result['version']) && !count($result['version'])) {
-            unset($result['version']);
-        }
+		if ( ! empty( $this->name ) ) {
+			$result['name'] = $this->name;
+		}
 
-        return $result;
-    }
+		if ( ! empty( $this->version ) ) {
+			$result['version'] = $this->version->toArray();
+		}
+
+		if ( isset( $result['version'] ) && ! count( $result['version'] ) ) {
+			unset( $result['version'] );
+		}
+
+		return $result;
+	}
 }

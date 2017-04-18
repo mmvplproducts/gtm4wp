@@ -5,68 +5,66 @@ namespace WhichBrowser\Analyser\Header;
 use WhichBrowser\Data;
 use WhichBrowser\Constants;
 
-class OperaMini
-{
-    public function __construct($header, &$data)
-    {
-        $this->data =& $data;
+class OperaMini {
 
-        $parts = explode(' # ', $header);
-        $manufacturer = isset($parts[0]) ? $parts[0] : '';
-        $model = isset($parts[1]) ? $parts[1] : '';
+	public function __construct( $header, &$data ) {
+		$this->data =& $data;
 
-        if ($manufacturer != '?' && $model != '?') {
-            if ($this->data->device->identified < Constants\Id::PATTERN) {
-                if ($this->identifyBasedOnModel($model)) {
-                    return;
-                }
+		$parts = explode( ' # ', $header );
+		$manufacturer = isset( $parts[0] ) ? $parts[0] : '';
+		$model = isset( $parts[1] ) ? $parts[1] : '';
 
-                $this->data->device->manufacturer = $manufacturer;
-                $this->data->device->model = $model;
-                $this->data->device->identified = true;
-            }
-        }
-    }
+		if ( $manufacturer != '?' && $model != '?' ) {
+			if ( $this->data->device->identified < Constants\Id::PATTERN ) {
+				if ( $this->identifyBasedOnModel( $model ) ) {
+					return;
+				}
 
-    private function identifyBasedOnModel($model)
-    {
-        $device = Data\DeviceModels::identify('bada', $model);
-        if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+				$this->data->device->manufacturer = $manufacturer;
+				$this->data->device->model = $model;
+				$this->data->device->identified = true;
+			}
+		}
+	}
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'Bada') {
-                $this->data->os->name = 'Bada';
-                $this->data->os->version = null;
-            }
+	private function identifyBasedOnModel( $model ) {
+		$device = Data\DeviceModels::identify( 'bada', $model );
+		if ( $device->identified ) {
+			$device->identified |= $this->data->device->identified;
+			$this->data->device = $device;
 
-            return true;
-        }
+			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Bada' ) {
+				$this->data->os->name = 'Bada';
+				$this->data->os->version = null;
+			}
 
-        $device = Data\DeviceModels::identify('blackberry', $model);
-        if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+			return true;
+		}
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'BlackBerry OS') {
-                $this->data->os->name = 'BlackBerry OS';
-                $this->data->os->version = null;
-            }
+		$device = Data\DeviceModels::identify( 'blackberry', $model );
+		if ( $device->identified ) {
+			$device->identified |= $this->data->device->identified;
+			$this->data->device = $device;
 
-            return true;
-        }
+			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'BlackBerry OS' ) {
+				$this->data->os->name = 'BlackBerry OS';
+				$this->data->os->version = null;
+			}
 
-        $device = Data\DeviceModels::identify('wm', $model);
-        if ($device->identified) {
-            $device->identified |= $this->data->device->identified;
-            $this->data->device = $device;
+			return true;
+		}
 
-            if (!isset($this->data->os->name) || $this->data->os->name != 'Windows Mobile') {
-                $this->data->os->name = 'Windows Mobile';
-                $this->data->os->version = null;
-            }
+		$device = Data\DeviceModels::identify( 'wm', $model );
+		if ( $device->identified ) {
+			$device->identified |= $this->data->device->identified;
+			$this->data->device = $device;
 
-            return true;
-        }
-    }
+			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Windows Mobile' ) {
+				$this->data->os->name = 'Windows Mobile';
+				$this->data->os->version = null;
+			}
+
+			return true;
+		}
+	}
 }

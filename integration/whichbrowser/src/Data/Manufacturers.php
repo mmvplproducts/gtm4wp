@@ -4,27 +4,26 @@ namespace WhichBrowser\Data;
 
 use WhichBrowser\Constants;
 
-class Manufacturers
-{
-    public static $GENERIC = [];
-    public static $TELEVISION = [];
+class Manufacturers {
 
-    public static function identify($type, $name)
-    {
-        $name = preg_replace('/^CUS\:/u', '', trim($name));
+	public static $GENERIC = [];
+	public static $TELEVISION = [];
 
-        require_once __DIR__ . '/../../data/manufacturer-names.php';
+	public static function identify( $type, $name ) {
+		$name = preg_replace( '/^CUS\:/u', '', trim( $name ) );
 
-        if ($type == Constants\DeviceType::TELEVISION) {
-            if (isset(Manufacturers::$TELEVISION[$name])) {
-                return self::$TELEVISION[$name];
-            }
-        }
+		require_once __DIR__ . '/../../data/manufacturer-names.php';
 
-        if (isset(Manufacturers::$GENERIC[$name])) {
-            return self::$GENERIC[$name];
-        }
+		if ( $type == Constants\DeviceType::TELEVISION ) {
+			if ( isset( Manufacturers::$TELEVISION[ $name ] ) ) {
+				return self::$TELEVISION[ $name ];
+			}
+		}
 
-        return $name;
-    }
+		if ( isset( Manufacturers::$GENERIC[ $name ] ) ) {
+			return self::$GENERIC[ $name ];
+		}
+
+		return $name;
+	}
 }

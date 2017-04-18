@@ -2,16 +2,15 @@
 
 namespace WhichBrowser\Data;
 
-class BrowserIds
-{
-    public static $ANDROID_BROWSERS = [];
+class BrowserIds {
 
-    public static function identify($model)
-    {
-        require_once __DIR__ . '/../../data/id-android.php';
+	public static $ANDROID_BROWSERS = [];
 
-        if (isset(BrowserIds::$ANDROID_BROWSERS[$model])) {
-            return BrowserIds::$ANDROID_BROWSERS[$model];
-        }
-    }
+	public static function identify( $model ) {
+		require_once __DIR__ . '/../../data/id-android.php';
+
+		if ( isset( BrowserIds::$ANDROID_BROWSERS[ $model ] ) ) {
+			return BrowserIds::$ANDROID_BROWSERS[ $model ];
+		}
+	}
 }
