@@ -7,7 +7,7 @@ $GLOBALS['gtm4wp_container_code_written'] = false;
 
 // check for empty is needed to prevent error in WP CLI
 // bugfix by Patrick Holberg Hesselberg
-if ( empty( $GLOBALS['gtm4wp_options'] ) || ($GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_DATALAYER_NAME ] == '') ) {
+if ( empty( $GLOBALS['gtm4wp_options'] ) || ( '' == $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_DATALAYER_NAME ] ) ) {
 	$GLOBALS['gtm4wp_datalayer_name'] = 'dataLayer';
 } else {
 	$GLOBALS['gtm4wp_datalayer_name'] = $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_DATALAYER_NAME ];
@@ -32,26 +32,26 @@ if ( ! function_exists( 'getallheaders' ) ) {
 	}
 }
 
-function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
+function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 	global $wp_query, $gtm4wp_options;
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_SITEID ] || $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_SITENAME ] ) {
-		$dataLayer['siteID']   = 0;
-		$dataLayer['siteName'] = '';
+		$data_layer['siteID']   = 0;
+		$data_layer['siteName'] = '';
 
 		if ( function_exists( 'get_blog_details' ) ) {
 			  $gtm4wp_blogdetails = get_blog_details();
 
-			  $dataLayer['siteID']   = $gtm4wp_blogdetails->blog_id;
-			  $dataLayer['siteName'] = $gtm4wp_blogdetails->blogname;
+			  $data_layer['siteID']   = $gtm4wp_blogdetails->blog_id;
+			  $data_layer['siteName'] = $gtm4wp_blogdetails->blogname;
 		}
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_LOGGEDIN ] ) {
 		if ( is_user_logged_in() ) {
-			$dataLayer['visitorLoginState'] = 'logged-in';
+			$data_layer['visitorLoginState'] = 'logged-in';
 		} else {
-			$dataLayer['visitorLoginState'] = 'logged-out';
+			$data_layer['visitorLoginState'] = 'logged-out';
 		}
 	}
 
@@ -59,37 +59,37 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 		$current_user = wp_get_current_user();
 
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_USERROLE ] ) {
-			$dataLayer['visitorType'] = ( empty( $current_user->roles[0] ) ? 'visitor-logged-out' : $current_user->roles[0] );
+			$data_layer['visitorType'] = ( empty( $current_user->roles[0] ) ? 'visitor-logged-out' : $current_user->roles[0] );
 		}
 
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_USEREMAIL ] ) {
-			$dataLayer['visitorEmail'] = ( empty( $current_user->user_email ) ? '' : $current_user->user_email );
+			$data_layer['visitorEmail'] = ( empty( $current_user->user_email ) ? '' : $current_user->user_email );
 		}
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_USERID ] ) {
 		$_gtm4wp_userid = get_current_user_id();
 		if ( $_gtm4wp_userid > 0 ) {
-			$dataLayer['visitorId'] = $_gtm4wp_userid;
+			$data_layer['visitorId'] = $_gtm4wp_userid;
 		}
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTTITLE ] ) {
-		$dataLayer['pageTitle'] = strip_tags( wp_title( '|', false, 'right' ) );
+		$data_layer['pageTitle'] = strip_tags( wp_title( '|', false, 'right' ) );
 	}
 
 	if ( is_singular() ) {
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTTYPE ] ) {
-			$dataLayer['pagePostType'] = get_post_type();
-			$dataLayer['pagePostType2'] = 'single-' . get_post_type();
+			$data_layer['pagePostType'] = get_post_type();
+			$data_layer['pagePostType2'] = 'single-' . get_post_type();
 		}
 
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_CATEGORIES ] ) {
 			$_post_cats = get_the_category();
 			if ( $_post_cats ) {
-				$dataLayer['pageCategory'] = array();
+				$data_layer['pageCategory'] = array();
 				foreach ( $_post_cats as $_one_cat ) {
-					$dataLayer['pageCategory'][] = $_one_cat->slug;
+					$data_layer['pageCategory'][] = $_one_cat->slug;
 				}
 			}
 		}
@@ -97,9 +97,9 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_TAGS ] ) {
 			$_post_tags = get_the_tags();
 			if ( $_post_tags ) {
-				$dataLayer['pageAttributes'] = array();
+				$data_layer['pageAttributes'] = array();
 				foreach ( $_post_tags as $_one_tag ) {
-					$dataLayer['pageAttributes'][] = $_one_tag->slug;
+					$data_layer['pageAttributes'][] = $_one_tag->slug;
 				}
 			}
 		}
@@ -109,101 +109,101 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 
 			if ( false !== $postuser ) {
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_AUTHORID ] ) {
-					$dataLayer['pagePostAuthorID'] = $postuser->ID;
+					$data_layer['pagePostAuthorID'] = $postuser->ID;
 				}
 
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_AUTHOR ] ) {
-					$dataLayer['pagePostAuthor'] = $postuser->display_name;
+					$data_layer['pagePostAuthor'] = $postuser->display_name;
 				}
 			}
 		}
 
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTDATE ] ) {
-			$dataLayer['pagePostDate'] = get_the_date();
-			$dataLayer['pagePostDateYear'] = get_the_date( 'Y' );
-			$dataLayer['pagePostDateMonth'] = get_the_date( 'm' );
-			$dataLayer['pagePostDateDay'] = get_the_date( 'd' );
+			$data_layer['pagePostDate'] = get_the_date();
+			$data_layer['pagePostDateYear'] = get_the_date( 'Y' );
+			$data_layer['pagePostDateMonth'] = get_the_date( 'm' );
+			$data_layer['pagePostDateDay'] = get_the_date( 'd' );
 		}
 	}
 
 	if ( is_archive() || is_post_type_archive() ) {
 		if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTTYPE ] ) {
-			$dataLayer['pagePostType'] = get_post_type();
+			$data_layer['pagePostType'] = get_post_type();
 
 			if ( is_category() ) {
-				$dataLayer['pagePostType2'] = 'category-' . get_post_type();
+				$data_layer['pagePostType2'] = 'category-' . get_post_type();
 			} elseif ( is_tag() ) {
-				$dataLayer['pagePostType2'] = 'tag-' . get_post_type();
+				$data_layer['pagePostType2'] = 'tag-' . get_post_type();
 			} elseif ( is_tax() ) {
-				$dataLayer['pagePostType2'] = 'tax-' . get_post_type();
+				$data_layer['pagePostType2'] = 'tax-' . get_post_type();
 			} elseif ( is_author() ) {
-				$dataLayer['pagePostType2'] = 'author-' . get_post_type();
+				$data_layer['pagePostType2'] = 'author-' . get_post_type();
 			} elseif ( is_year() ) {
-				$dataLayer['pagePostType2'] = 'year-' . get_post_type();
+				$data_layer['pagePostType2'] = 'year-' . get_post_type();
 
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTDATE ] ) {
-					$dataLayer['pagePostDateYear'] = get_the_date( 'Y' );
+					$data_layer['pagePostDateYear'] = get_the_date( 'Y' );
 				}
 			} elseif ( is_month() ) {
-				$dataLayer['pagePostType2'] = 'month-' . get_post_type();
+				$data_layer['pagePostType2'] = 'month-' . get_post_type();
 
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTDATE ] ) {
-					$dataLayer['pagePostDateYear'] = get_the_date( 'Y' );
-					$dataLayer['pagePostDateMonth'] = get_the_date( 'm' );
+					$data_layer['pagePostDateYear'] = get_the_date( 'Y' );
+					$data_layer['pagePostDateMonth'] = get_the_date( 'm' );
 				}
 			} elseif ( is_day() ) {
-				$dataLayer['pagePostType2'] = 'day-' . get_post_type();
+				$data_layer['pagePostType2'] = 'day-' . get_post_type();
 
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTDATE ] ) {
-					$dataLayer['pagePostDate'] = get_the_date();
-					$dataLayer['pagePostDateYear'] = get_the_date( 'Y' );
-					$dataLayer['pagePostDateMonth'] = get_the_date( 'm' );
-					$dataLayer['pagePostDateDay'] = get_the_date( 'd' );
+					$data_layer['pagePostDate'] = get_the_date();
+					$data_layer['pagePostDateYear'] = get_the_date( 'Y' );
+					$data_layer['pagePostDateMonth'] = get_the_date( 'm' );
+					$data_layer['pagePostDateDay'] = get_the_date( 'd' );
 				}
 			} elseif ( is_time() ) {
-				$dataLayer['pagePostType2'] = 'time-' . get_post_type();
+				$data_layer['pagePostType2'] = 'time-' . get_post_type();
 			} elseif ( is_date() ) {
-				$dataLayer['pagePostType2'] = 'date-' . get_post_type();
+				$data_layer['pagePostType2'] = 'date-' . get_post_type();
 
 				if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTDATE ] ) {
-					$dataLayer['pagePostDate'] = get_the_date();
-					$dataLayer['pagePostDateYear'] = get_the_date( 'Y' );
-					$dataLayer['pagePostDateMonth'] = get_the_date( 'm' );
-					$dataLayer['pagePostDateDay'] = get_the_date( 'd' );
+					$data_layer['pagePostDate'] = get_the_date();
+					$data_layer['pagePostDateYear'] = get_the_date( 'Y' );
+					$data_layer['pagePostDateMonth'] = get_the_date( 'm' );
+					$data_layer['pagePostDateDay'] = get_the_date( 'd' );
 				}
 			}
 		}
 
 		if ( ( is_tax() || is_category() ) && $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_CATEGORIES ] ) {
 			$_post_cats = get_the_category();
-			$dataLayer['pageCategory'] = array();
+			$data_layer['pageCategory'] = array();
 			foreach ( $_post_cats as $_one_cat ) {
-				$dataLayer['pageCategory'][] = $_one_cat->slug;
+				$data_layer['pageCategory'][] = $_one_cat->slug;
 			}
 		}
 
 		if ( ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_AUTHORID ] ) && ( is_author() ) ) {
 			global $authordata;
-			$dataLayer['pagePostAuthorID'] = isset( $authordata->ID ) ? $authordata->ID : 0;
+			$data_layer['pagePostAuthorID'] = isset( $authordata->ID ) ? $authordata->ID : 0;
 		}
 
 		if ( ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_AUTHOR ] ) && ( is_author() ) ) {
-			$dataLayer['pagePostAuthor'] = get_the_author();
+			$data_layer['pagePostAuthor'] = get_the_author();
 		}
 	}
 
 	if ( is_search() ) {
-		$dataLayer['siteSearchTerm'] = get_search_query();
-		$dataLayer['siteSearchFrom'] = ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '' );
-		$dataLayer['siteSearchResults'] = $wp_query->post_count;
+		$data_layer['siteSearchTerm'] = get_search_query();
+		$data_layer['siteSearchFrom'] = ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '' );
+		$data_layer['siteSearchResults'] = $wp_query->post_count;
 	}
 
 	if ( is_front_page() && $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTTYPE ] ) {
-		$dataLayer['pagePostType'] = 'frontpage';
+		$data_layer['pagePostType'] = 'frontpage';
 	}
 
 	if ( ! is_front_page() && is_home() && $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTTYPE ] ) {
-		$dataLayer['pagePostType'] = 'bloghome';
+		$data_layer['pagePostType'] = 'bloghome';
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_BROWSERDATA ] || $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_OSDATA ] || $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_DEVICEDATA ] ) {
@@ -224,36 +224,36 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 			$detected = new WhichBrowser\Parser( $gtp4wp_headers );
 
 			if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_BROWSERDATA ] ) {
-				$dataLayer['browserName']         = isset( $detected->browser->name ) ? $detected->browser->name : '';
-				$dataLayer['browserVersion']      = isset( $detected->browser->version->value ) ? $detected->browser->version->value : '';
+				$data_layer['browserName']         = isset( $detected->browser->name ) ? $detected->browser->name : '';
+				$data_layer['browserVersion']      = isset( $detected->browser->version->value ) ? $detected->browser->version->value : '';
 
-				$dataLayer['browserEngineName']         = isset( $detected->engine->name ) ? $detected->engine->name : '';
-				$dataLayer['browserEngineVersion']      = isset( $detected->engine->version->value ) ? $detected->engine->version->value : '';
+				$data_layer['browserEngineName']         = isset( $detected->engine->name ) ? $detected->engine->name : '';
+				$data_layer['browserEngineVersion']      = isset( $detected->engine->version->value ) ? $detected->engine->version->value : '';
 			}
 
 			if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_OSDATA ] ) {
-				$dataLayer['osName']         = isset( $detected->os->name ) ? $detected->os->name : '';
-				$dataLayer['osVersion']      = isset( $detected->os->version->value ) ? $detected->os->version->value : '';
+				$data_layer['osName']         = isset( $detected->os->name ) ? $detected->os->name : '';
+				$data_layer['osVersion']      = isset( $detected->os->version->value ) ? $detected->os->version->value : '';
 			}
 
 			if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_DEVICEDATA ] ) {
-				$dataLayer['deviceType']         = isset( $detected->device->type ) ? $detected->device->type : '';
-				$dataLayer['deviceManufacturer'] = isset( $detected->device->manufacturer ) ? $detected->device->manufacturer : '';
-				$dataLayer['deviceModel']        = isset( $detected->device->model ) ? $detected->device->model : '';
+				$data_layer['deviceType']         = isset( $detected->device->type ) ? $detected->device->type : '';
+				$data_layer['deviceManufacturer'] = isset( $detected->device->manufacturer ) ? $detected->device->manufacturer : '';
+				$data_layer['deviceModel']        = isset( $detected->device->model ) ? $detected->device->model : '';
 			}
 		}
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTCOUNT ] ) {
-		$dataLayer['postCountOnPage'] = (int) $wp_query->post_count;
-		$dataLayer['postCountTotal']  = (int) $wp_query->found_posts;
+		$data_layer['postCountOnPage'] = (int) $wp_query->post_count;
+		$data_layer['postCountTotal']  = (int) $wp_query->found_posts;
 	}
 
-	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTID ] && is_singular() === true ) {
-		$dataLayer['postID']  = (int) get_the_ID();
+	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_POSTID ] && true === is_singular() ) {
+		$data_layer['postID']  = (int) get_the_ID();
 	}
 
-	if ( $gtm4wp_options[ GTM4WP_OPTION_BLACKLIST_ENABLE ] > 0 ) {
+	if ( 0 < $gtm4wp_options[ GTM4WP_OPTION_BLACKLIST_ENABLE ] ) {
 		$_gtmrestrictlistitems = array();
 
 		// IDs from https://developers.google.com/tag-manager/devguide#security
@@ -317,7 +317,7 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 
 		$_gtmwhitelist = array();
 		$_gtmblacklist = array();
-		if ( $gtm4wp_options[ GTM4WP_OPTION_BLACKLIST_ENABLE ] == 1 ) {
+		if ( 1 == $gtm4wp_options[ GTM4WP_OPTION_BLACKLIST_ENABLE ] ) {
 			$_gtmblacklist = array_merge( $_gtmblacklist, $_gtmrestrictlistitems );
 		} else {
 			$_gtmwhitelist = array_merge( $_gtmwhitelist, $_gtmrestrictlistitems );
@@ -367,17 +367,17 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 			$_gtmwhitelist[] = 'v';
 		}
 
-		$dataLayer['gtm.whitelist'] = $_gtmwhitelist;
-		$dataLayer['gtm.blacklist'] = $_gtmblacklist;
+		$data_layer['gtm.whitelist'] = $_gtmwhitelist;
+		$data_layer['gtm.blacklist'] = $_gtmblacklist;
 	}
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHER ] ) {
-		$dataLayer['weatherCategory'] = __( '(no weather data available)', 'duracelltomi-google-tag-manager' );
-		$dataLayer['weatherDescription'] = __( '(no weather data available)', 'duracelltomi-google-tag-manager' );
-		$dataLayer['weatherTemp'] = 0;
-		$dataLayer['weatherPressure'] = 0;
-		$dataLayer['weatherWindSpeed'] = 0;
-		$dataLayer['weatherWindDeg'] = 0;
+		$data_layer['weatherCategory'] = __( '(no weather data available)', 'duracelltomi-google-tag-manager' );
+		$data_layer['weatherDescription'] = __( '(no weather data available)', 'duracelltomi-google-tag-manager' );
+		$data_layer['weatherTemp'] = 0;
+		$data_layer['weatherPressure'] = 0;
+		$data_layer['weatherWindSpeed'] = 0;
+		$data_layer['weatherWindDeg'] = 0;
 
 		$gtm4wp_sessionid = array_key_exists( 'gtm4wp_sessoionid', $_COOKIE ) ? $_COOKIE['gtm4wp_sessoionid'] : '';
 		// this is needed so that nobody can do a hack by editing our cookie
@@ -387,17 +387,17 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 			$weatherdata = get_transient( 'gtm4wp-weatherdata-' . $gtm4wp_sessionid );
 
 			if ( false !== $weatherdata ) {
-				$dataLayer['weatherCategory'] = $weatherdata->weather[0]->main;
-				$dataLayer['weatherDescription'] = $weatherdata->weather[0]->description;
-				$dataLayer['weatherTemp'] = $weatherdata->main->temp;
-				$dataLayer['weatherPressure'] = $weatherdata->main->pressure;
-				$dataLayer['weatherWindSpeed'] = $weatherdata->wind->speed;
-				$dataLayer['weatherWindDeg'] = $weatherdata->wind->deg;
+				$data_layer['weatherCategory'] = $weatherdata->weather[0]->main;
+				$data_layer['weatherDescription'] = $weatherdata->weather[0]->description;
+				$data_layer['weatherTemp'] = $weatherdata->main->temp;
+				$data_layer['weatherPressure'] = $weatherdata->main->pressure;
+				$data_layer['weatherWindSpeed'] = $weatherdata->wind->speed;
+				$data_layer['weatherWindDeg'] = $weatherdata->wind->deg;
 			}
 		}
 	}
 
-	return $dataLayer;
+	return $data_layer;
 }
 
 function gtm4wp_wp_loaded() {
@@ -416,13 +416,13 @@ function gtm4wp_wp_loaded() {
 		$weatherdata = get_transient( 'gtm4wp-weatherdata-' . $gtm4wp_sessionid );
 
 		if ( false === $weatherdata ) {
-			$gtm4wp_geodata = wp_remote_get( 'http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR'] );
+			$gtm4wp_geodata = vip_safe_wp_remote_get( 'http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR'] );
 
 			if ( is_array( $gtm4wp_geodata ) && ( 200 == $gtm4wp_geodata['response']['code'] ) ) {
 				$gtm4wp_geodata = unserialize( $gtm4wp_geodata['body'] );
 
 				if ( array_key_exists( 'geoplugin_latitude', $gtm4wp_geodata ) && array_key_exists( 'geoplugin_longitude', $gtm4wp_geodata ) ) {
-					$weatherdata = wp_remote_get( 'http://api.openweathermap.org/data/2.5/weather?appid=' . $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHEROWMAPI ] . '&lat=' . $gtm4wp_geodata['geoplugin_latitude'] . '&lon=' . $gtm4wp_geodata['geoplugin_longitude'] . '&units=' . ($gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHERUNITS ] == 0 ? 'metric' : 'imperial') );
+					$weatherdata = vip_safe_wp_remote_get( 'http://api.openweathermap.org/data/2.5/weather?appid=' . $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHEROWMAPI ] . '&lat=' . $gtm4wp_geodata['geoplugin_latitude'] . '&lon=' . $gtm4wp_geodata['geoplugin_longitude'] . '&units=' . (0 == $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHERUNITS ] ? 'metric' : 'imperial') );
 
 					if ( is_array( $weatherdata ) && ( 200 == $weatherdata['response']['code'] ) ) {
 						$weatherdata = @json_decode( $weatherdata['body'] );
@@ -447,7 +447,7 @@ function gtm4wp_get_the_gtm_tag() {
 		$gtm4wp_container_code_written = true;
 	}
 
-	if ( ( $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] != '' ) && ( ! $gtm4wp_container_code_written ) ) {
+	if ( ( '' != $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] ) && ( ! $gtm4wp_container_code_written ) ) {
 		$_gtm_codes = explode( ',', str_replace( array( ';', ' ' ), array( ',', '' ), $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] ) );
 
 		foreach ( $_gtm_codes as $one_gtm_code ) {
@@ -537,14 +537,14 @@ function gtm4wp_wp_body_open() {
 	}
 }
 
-function gtm4wp_filter_visitor_keys( $dataLayer ) {
-	foreach ( $dataLayer as $dl_key => $dl_value ) {
+function gtm4wp_filter_visitor_keys( $data_layer ) {
+	foreach ( $data_layer as $dl_key => $dl_value ) {
 		if ( strpos( $dl_key, 'visitor' ) !== false ) {
-			unset( $dataLayer[ $dl_key ] );
+			unset( $data_layer[ $dl_key ] );
 		}
 	}
 
-	return $dataLayer;
+	return $data_layer;
 }
 
 function gtm4wp_wp_header_begin() {
@@ -566,7 +566,7 @@ function gtm4wp_wp_header_begin() {
 	var gtm4wp_scrollerscript_scannertime       = ' . (int) $gtm4wp_options[ GTM4WP_OPTION_SCROLLER_READERTIME ] . ';';
 	}
 
-	if ( $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] != '' ) {
+	if ( '' != $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] ) {
 		$gtm4wp_datalayer_data = array();
 		$gtm4wp_datalayer_data = (array) apply_filters( GTM4WP_WPFILTER_COMPILE_DATALAYER, $gtm4wp_datalayer_data );
 
@@ -599,14 +599,14 @@ function gtm4wp_wp_header_begin() {
 	' . $gtm4wp_datalayer_name . '.push(' . str_replace(
 			array( '"-~-', '-~-"' ),
 			array( '', '' ),
-			str_replace( '–', '-', $dl_json_data )
+			str_replace( '?', '-', $dl_json_data )
 		) . ');';
 	}
 
 	$_gtm_header_content .= '
 </script>';
 
-	if ( ( $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] != '' ) && ( GTM4WP_PLACEMENT_OFF != $gtm4wp_options[ GTM4WP_OPTION_GTM_PLACEMENT ] ) ) {
+	if ( ( '' != $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] ) && ( GTM4WP_PLACEMENT_OFF != $gtm4wp_options[ GTM4WP_OPTION_GTM_PLACEMENT ] ) ) {
 		$_gtm_codes = explode( ',', str_replace( array( ';', ' ' ), array( ',', '' ), $gtm4wp_options[ GTM4WP_OPTION_GTM_CODE ] ) );
 
 		$_gtm_tag = '';
