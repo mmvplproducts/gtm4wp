@@ -1039,7 +1039,7 @@ function gtm4wp_show_warning() {
 	global $gtm4wp_options, $gtp4wp_plugin_url, $gtm4wp_integratefieldtexts, $woocommerce, $current_user,
 		$gtm4wp_def_user_notices_dismisses;
 
-	$gtm4wp_user_notices_dismisses = get_user_meta( $current_user->ID, GTM4WP_USER_NOTICES_KEY, true );
+	$gtm4wp_user_notices_dismisses = get_user_attribute( $current_user->ID, GTM4WP_USER_NOTICES_KEY );
 	if ( $gtm4wp_user_notices_dismisses === '' ) {
 		$gtm4wp_user_notices_dismisses = $gtm4wp_def_user_notices_dismisses;
 	} else {
@@ -1085,7 +1085,7 @@ function gtm4wp_show_warning() {
 function gtm4wp_dismiss_notice() {
 	global $gtm4wp_def_user_notices_dismisses, $current_user;
 
-	$gtm4wp_user_notices_dismisses = get_user_meta( $current_user->ID, GTM4WP_USER_NOTICES_KEY, true );
+	$gtm4wp_user_notices_dismisses = get_user_attribute( $current_user->ID, GTM4WP_USER_NOTICES_KEY );
 	if ( $gtm4wp_user_notices_dismisses === '' ) {
 		$gtm4wp_user_notices_dismisses = $gtm4wp_def_user_notices_dismisses;
 	} else {
@@ -1099,7 +1099,7 @@ function gtm4wp_dismiss_notice() {
 	$noticeid = trim( basename( $_POST['noticeid'] ) );
 	if ( array_key_exists( $noticeid, $gtm4wp_user_notices_dismisses ) ) {
 		$gtm4wp_user_notices_dismisses[ $noticeid ] = true;
-		update_user_meta( $current_user->ID, GTM4WP_USER_NOTICES_KEY, serialize( $gtm4wp_user_notices_dismisses ) );
+		update_user_attribute( $current_user->ID, GTM4WP_USER_NOTICES_KEY, serialize( $gtm4wp_user_notices_dismisses ) );
 	}
 }
 
