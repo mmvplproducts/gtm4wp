@@ -525,7 +525,7 @@ function gtm4wp_admin_output_field( $args ) {
 		}
 
 		case GTM4WP_ADMIN_GROUP_DATALAYER: {
-			echo '<input type="text" id="' . GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']" name="' . GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']" value="' . $gtm4wp_options[GTM4WP_OPTION_DATALAYER_NAME] . '" /><br />' . $args['description'];
+			echo '<input type="text" id="' . GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']" name="' . GTM4WP_OPTIONS . '[' . GTM4WP_OPTION_DATALAYER_NAME . ']" value="' . $gtm4wp_options[ GTM4WP_OPTION_DATALAYER_NAME ] . '" /><br />' . $args['description'];
 			echo '<br /><span class="datalayername_validation_error">' . __( 'This does not seems to be a valid JavaScript variable name! Please check and try again', 'duracelltomi-google-tag-manager' ) . '</span>';
 
 			break;
@@ -568,9 +568,9 @@ function gtm4wp_admin_output_field( $args ) {
 
 					if ( isset( $args['plugintocheck'] ) ) {
 						if ( is_plugin_active( $args['plugintocheck'] ) ) {
-							echo "<br />" . __( 'This plugin is <strong class="gtm4wp-plugin-active">active</strong>, it is strongly recommended to enable this integration!', 'duracelltomi-google-tag-manager' );
+							echo '<br />' . __( 'This plugin is <strong class="gtm4wp-plugin-active">active</strong>, it is strongly recommended to enable this integration!', 'duracelltomi-google-tag-manager' );
 						} else {
-							echo "<br />" . __( 'This plugin is <strong class="gtm4wp-plugin-not-active">not active</strong>, enabling this integration could cause issues on frontend!', 'duracelltomi-google-tag-manager' );
+							echo '<br />' . __( 'This plugin is <strong class="gtm4wp-plugin-not-active">not active</strong>, enabling this integration could cause issues on frontend!', 'duracelltomi-google-tag-manager' );
 						}
 					}
 
