@@ -124,7 +124,7 @@ $GLOBALS['gtm4wp_includefieldtexts'] = array(
 	),
 	GTM4WP_OPTION_INCLUDE_WEATHER => array(
 		'label'       => __( 'Weather data', 'duracelltomi-google-tag-manager' ),
-		'description' => sprintf( __( "Check this option to include the current weather conditions around the current visitor.<br /><strong>Attention!</strong> This feature uses <a href=\"%s\" target=\"_blank\">geoplugin.com</a> and <a href=\"%s\" target=\"_blank\">openweathermap.org</a> to collect data.<br />Depending on your website's traffic, additional fees may apply!<br />This plugin caches weather data for 1 hour to lower the need to access those services.", 'duracelltomi-google-tag-manager' ), 'http://www.geoplugin.com/premium?utm_source=gtm4wp&utm_medium=link&utm_campaign=duracelltomi-google-tag-manager-for-wordpress', 'http://openweathermap.org/price?utm_source=gtm4wp&utm_medium=link&utm_campaign=duracelltomi-google-tag-manager-for-wordpress' ),
+		'description' => sprintf( __( "Check this option to include the current weather conditions around the current visitor.<br /><strong>Attention!</strong> This feature uses <a href=\"%1$s\" target=\"_blank\">geoplugin.com</a> and <a href=\"%1$s\" target=\"_blank\">openweathermap.org</a> to collect data.<br />Depending on your website's traffic, additional fees may apply!<br />This plugin caches weather data for 1 hour to lower the need to access those services.", 'duracelltomi-google-tag-manager' ), 'http://www.geoplugin.com/premium?utm_source=gtm4wp&utm_medium=link&utm_campaign=duracelltomi-google-tag-manager-for-wordpress', 'http://openweathermap.org/price?utm_source=gtm4wp&utm_medium=link&utm_campaign=duracelltomi-google-tag-manager-for-wordpress' ),
 		'phase'       => GTM4WP_PHASE_EXPERIMENTAL,
 	),
 	GTM4WP_OPTION_INCLUDE_WEATHERUNITS => array(
@@ -594,9 +594,9 @@ function gtm4wp_admin_output_field( $args ) {
 				default : {
 					echo '<input type="text" id="' . GTM4WP_OPTIONS . '[' . $args['optionfieldid'] . ']" name="' . GTM4WP_OPTIONS . '[' . $args['optionfieldid'] . ']" value="' . esc_attr( $optval ) . '" size="80" /><br />' . $args['description'];
 				}
-			} // end switch gettype optval
+				} // end switch gettype optval
 		}
-	} // end switch
+		} // end switch
 }
 
 function gtm4wp_sanitize_options( $options ) {
@@ -692,7 +692,7 @@ function gtm4wp_sanitize_options( $options ) {
 				default: {
 					$output[ $optionname ] = $newoptionvalue;
 				}
-			} // end switch
+				} // end switch
 		}
 	}
 
