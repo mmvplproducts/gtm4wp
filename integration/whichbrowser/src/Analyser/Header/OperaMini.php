@@ -14,9 +14,9 @@ class OperaMini {
 		$manufacturer = isset( $parts[0] ) ? $parts[0] : '';
 		$model = isset( $parts[1] ) ? $parts[1] : '';
 
-		if ( $manufacturer != '?' && $model != '?' ) {
+		if ( '?' != $manufacturer && '?' != $model ) {
 			if ( $this->data->device->identified < Constants\Id::PATTERN ) {
-				if ( $this->identifyBasedOnModel( $model ) ) {
+				if ( $this->identify_based_on_model( $model ) ) {
 					return;
 				}
 
@@ -27,13 +27,13 @@ class OperaMini {
 		}
 	}
 
-	private function identifyBasedOnModel( $model ) {
+	private function identify_based_on_model( $model ) {
 		$device = Data\DeviceModels::identify( 'bada', $model );
 		if ( $device->identified ) {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Bada' ) {
+			if ( ! isset( $this->data->os->name ) || 'Bada' != $this->data->os->name ) {
 				$this->data->os->name = 'Bada';
 				$this->data->os->version = null;
 			}
@@ -46,7 +46,7 @@ class OperaMini {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'BlackBerry OS' ) {
+			if ( ! isset( $this->data->os->name ) || 'BlackBerry OS' != $this->data->os->name ) {
 				$this->data->os->name = 'BlackBerry OS';
 				$this->data->os->version = null;
 			}
@@ -59,7 +59,7 @@ class OperaMini {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Windows Mobile' ) {
+			if ( ! isset( $this->data->os->name ) || 'Windows Mobile' != $this->data->os->name ) {
 				$this->data->os->name = 'Windows Mobile';
 				$this->data->os->version = null;
 			}

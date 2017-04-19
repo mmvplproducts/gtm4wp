@@ -129,7 +129,7 @@ class UCBrowserNew {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Series60' ) {
+			if ( ! isset( $this->data->os->name ) || 'Series60' != $this->data->os->name ) {
 				$this->data->os->name = 'Series60';
 				$this->data->os->version = null;
 				$this->data->os->family = new Family( [ 'name' => 'Symbian' ] );
@@ -143,7 +143,7 @@ class UCBrowserNew {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Series40' ) {
+			if ( ! isset( $this->data->os->name ) || 'Series40' != $this->data->os->name ) {
 				$this->data->os->name = 'Series40';
 				$this->data->os->version = null;
 			}
@@ -156,7 +156,7 @@ class UCBrowserNew {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Bada' ) {
+			if ( ! isset( $this->data->os->name ) || 'Bada' != $this->data->os->name ) {
 				$this->data->os->name = 'Bada';
 				$this->data->os->version = null;
 			}
@@ -169,7 +169,7 @@ class UCBrowserNew {
 			$device->identified |= $this->data->device->identified;
 			$this->data->device = $device;
 
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Touchwiz' ) {
+			if ( ! isset( $this->data->os->name ) || 'Touchwiz' != $this->data->os->name ) {
 				$this->data->os->name = 'Touchwiz';
 				$this->data->os->version = null;
 			}

@@ -11,7 +11,7 @@ class Puffin {
 
 		$parts = explode( '/', $header );
 
-		if ( $this->data->browser->name != 'Puffin' ) {
+		if ( 'Puffin' != $this->data->browser->name ) {
 			$this->data->browser->name = 'Puffin';
 			$this->data->browser->version = null;
 			$this->data->browser->stock = false;
@@ -19,8 +19,8 @@ class Puffin {
 
 		$this->data->device->type = 'mobile';
 
-		if ( count( $parts ) > 1 && $parts[0] == 'Android' ) {
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Android' ) {
+		if ( count( $parts ) > 1 && 'Android' == $parts[0] ) {
+			if ( ! isset( $this->data->os->name ) || 'Android' != $this->data->os->name ) {
 				$this->data->os->name = 'Android';
 				$this->data->os->version = null;
 			}
@@ -32,8 +32,8 @@ class Puffin {
 			}
 		}
 
-		if ( count( $parts ) > 1 && $parts[0] == 'iPhone OS' ) {
-			if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'iOS' ) {
+		if ( count( $parts ) > 1 && 'iPhone OS' == $parts[0] ) {
+			if ( ! isset( $this->data->os->name ) || 'iOS' != $this->data->os->name ) {
 				$this->data->os->name = 'iOS';
 				$this->data->os->version = null;
 			}

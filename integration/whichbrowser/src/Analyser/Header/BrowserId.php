@@ -14,7 +14,7 @@ class BrowserId {
 
 		/* The X-Requested-With header is send by the WebView, so our browser name is Chrome it is probably the Chromium WebView which is sometimes misidentified. */
 
-		if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Chrome' ) {
+		if ( isset( $this->data->browser->name ) && 'Chrome' == $this->data->browser->name ) {
 			$version = $this->data->browser->getVersion();
 
 			$this->data->browser->reset();
@@ -40,7 +40,7 @@ class BrowserId {
 
 		/* The X-Requested-With header is only send from Android devices */
 
-		if ( ! isset( $this->data->os->name ) || ($this->data->os->name != 'Android' && ( ! isset( $this->data->os->family ) || $this->data->os->family->getName() != 'Android')) ) {
+		if ( ! isset( $this->data->os->name ) || ('Android' != $this->data->os->name && ( ! isset( $this->data->os->family ) || 'Android' != $this->data->os->family->getName() )) ) {
 			$this->data->os->name = 'Android';
 			$this->data->os->alias = null;
 			$this->data->os->version = null;
@@ -49,14 +49,14 @@ class BrowserId {
 			$this->data->device->model = null;
 			$this->data->device->identified = Constants\Id::NONE;
 
-			if ( $this->data->device->type != Constants\DeviceType::MOBILE && $this->data->device->type != Constants\DeviceType::TABLET ) {
+			if ( Constants\DeviceType::MOBILE != $this->data->device->type && Constants\DeviceType::TABLET != $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::MOBILE;
 			}
 		}
 
 		/* The X-Requested-With header is send by the WebKit or Chromium Webview */
 
-		if ( ! isset( $this->data->engine->name ) || ($this->data->engine->name != 'Webkit' && $this->data->engine->name != 'Blink') ) {
+		if ( ! isset( $this->data->engine->name ) || ('Webkit' != $this->data->engine->name && 'Blink' != $this->data->engine->name ) ) {
 			$this->data->engine->name = 'Webkit';
 			$this->data->engine->version = null;
 		}

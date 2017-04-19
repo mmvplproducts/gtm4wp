@@ -75,7 +75,7 @@ trait Browser {
 			}
 
 			if ( ! $falsepositive ) {
-				if ( isset( $this->data->os->name ) && $this->data->os->name == 'iOS' ) {
+				if ( isset( $this->data->os->name ) && 'iOS' == $this->data->os->name ) {
 					$this->data->browser->name = 'Safari';
 					$this->data->browser->type = Constants\BrowserType::BROWSER;
 					$this->data->browser->version = null;
@@ -86,10 +86,10 @@ trait Browser {
 					}
 				}
 
-				if ( isset( $this->data->os->name ) && ($this->data->os->name == 'OS X' || $this->data->os->name == 'Windows') ) {
+				if ( isset( $this->data->os->name ) && ('OS X' == $this->data->os->name || 'Windows' == $this->data->os->name ) ) {
 					$this->data->browser->name = 'Safari';
 					$this->data->browser->type = Constants\BrowserType::BROWSER;
-					$this->data->browser->stock = $this->data->os->name == 'OS X';
+					$this->data->browser->stock = 'OS X' == $this->data->os->name;
 
 					if ( preg_match( '/Version\/([0-9\.]+)/u', $ua, $match ) ) {
 						$this->data->browser->version = new Version( [ 'value' => $match[1] ] );
@@ -134,12 +134,12 @@ trait Browser {
 			}
 			$this->data->browser->version = new Version( [ 'value' => $version ] );
 
-			if ( isset( $this->data->os->name ) && $this->data->os->name == 'Android' ) {
+			if ( isset( $this->data->os->name ) && 'Android' == $this->data->os->name ) {
 				$channel = Data\Chrome::getChannel( 'mobile', $this->data->browser->version->value );
 
-				if ( $channel == 'stable' ) {
+				if ( 'stable' == $channel ) {
 					$this->data->browser->version->details = 1;
-				} elseif ( $channel == 'beta' ) {
+				} elseif ( 'beta' == $channel  ) {
 					$this->data->browser->channel = 'Beta';
 				} else {
 					$this->data->browser->channel = 'Dev';
@@ -166,7 +166,7 @@ trait Browser {
 				}
 
 				/* LG Chromium based browsers */
-				if ( isset( $this->data->device->manufacturer ) && $this->data->device->manufacturer == 'LG' ) {
+				if ( isset( $this->data->device->manufacturer ) && 'LG' == $this->data->device->manufacturer ) {
 					if ( in_array( $version, [ '30.0.1599.103', '34.0.1847.118', '38.0.2125.0', '38.0.2125.102' ] ) && preg_match( '/Version\/4/u', $ua ) && ! preg_match( '/; wv\)/u', $ua ) ) {
 						$this->data->browser->name = 'LG Browser';
 						$this->data->browser->channel = null;
@@ -176,10 +176,10 @@ trait Browser {
 				}
 
 				/* Samsung Chromium based browsers */
-				if ( isset( $this->data->device->manufacturer ) && $this->data->device->manufacturer == 'Samsung' ) {
+				if ( isset( $this->data->device->manufacturer ) && 'Samsung' == $this->data->device->manufacturer  ) {
 
 					/* Version 1.0 */
-					if ( $version == '18.0.1025.308' && preg_match( '/Version\/1.0/u', $ua ) ) {
+					if ( '18.0.1025.308' == $version && preg_match( '/Version\/1.0/u', $ua ) ) {
 						$this->data->browser->name = 'Samsung Internet';
 						$this->data->browser->channel = null;
 						$this->data->browser->stock = true;
@@ -187,7 +187,7 @@ trait Browser {
 					}
 
 					/* Version 1.5 */
-					if ( $version == '28.0.1500.94' && preg_match( '/Version\/1.5/u', $ua ) ) {
+					if ( '28.0.1500.94' == $version && preg_match( '/Version\/1.5/u', $ua ) ) {
 						$this->data->browser->name = 'Samsung Internet';
 						$this->data->browser->channel = null;
 						$this->data->browser->stock = true;
@@ -195,7 +195,7 @@ trait Browser {
 					}
 
 					/* Version 1.6 */
-					if ( $version == '28.0.1500.94' && preg_match( '/Version\/1.6/u', $ua ) ) {
+					if ( '28.0.1500.94' == $version && preg_match( '/Version\/1.6/u', $ua ) ) {
 						$this->data->browser->name = 'Samsung Internet';
 						$this->data->browser->channel = null;
 						$this->data->browser->stock = true;
@@ -203,7 +203,7 @@ trait Browser {
 					}
 
 					/* Version 2.0 */
-					if ( $version == '34.0.1847.76' && preg_match( '/Version\/2.0/u', $ua ) ) {
+					if ( '34.0.1847.76' == $version && preg_match( '/Version\/2.0/u', $ua ) ) {
 						$this->data->browser->name = 'Samsung Internet';
 						$this->data->browser->channel = null;
 						$this->data->browser->stock = true;
@@ -211,7 +211,7 @@ trait Browser {
 					}
 
 					/* Version 2.1 */
-					if ( $version == '34.0.1847.76' && preg_match( '/Version\/2.1/u', $ua ) ) {
+					if ( '34.0.1847.76' == $version && preg_match( '/Version\/2.1/u', $ua ) ) {
 						$this->data->browser->name = 'Samsung Internet';
 						$this->data->browser->channel = null;
 						$this->data->browser->stock = true;
@@ -235,20 +235,20 @@ trait Browser {
 			} else {
 				$channel = Data\Chrome::getChannel( 'desktop', $version );
 
-				if ( $channel == 'stable' ) {
-					if ( explode( '.', $version )[1] == '0' ) {
+				if ( 'stable' == $channel ) {
+					if ( '0' == explode( '.', $version )[1] ) {
 						$this->data->browser->version->details = 1;
 					} else {
 						$this->data->browser->version->details = 2;
 					}
-				} elseif ( $channel == 'beta' ) {
+				} elseif ( 'beta' == $channel ) {
 					$this->data->browser->channel = 'Beta';
 				} else {
 					$this->data->browser->channel = 'Dev';
 				}
 			}
 
-			if ( $this->data->device->type == '' ) {
+			if ( '' == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::DESKTOP;
 			}
 		}
@@ -265,7 +265,7 @@ trait Browser {
 				$this->data->browser->version = new Version( [ 'value' => $match[1] ] );
 			}
 
-			if ( $this->data->device->type == '' ) {
+			if ( '' == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::DESKTOP;
 			}
 		}
@@ -339,7 +339,7 @@ trait Browser {
 			if ( preg_match( '/IEMobile/u', $ua ) || preg_match( '/Windows CE/u', $ua ) || preg_match( '/Windows Phone/u', $ua ) || preg_match( '/WP7/u', $ua ) || preg_match( '/WPDesktop/u', $ua ) ) {
 				$this->data->browser->name = 'Mobile Internet Explorer';
 
-				if ( isset( $this->data->device->model ) && ($this->data->device->model == 'Xbox 360' || $this->data->device->model == 'Xbox One') ) {
+				if ( isset( $this->data->device->model ) && ('Xbox 360' == $this->data->device->model || 'Xbox One' == $this->data->device->model ) ) {
 					$this->data->browser->name = 'Internet Explorer';
 				}
 			}
@@ -465,7 +465,7 @@ trait Browser {
 				$this->data->browser->channel = 'Beta';
 			}
 
-			if ( $this->data->device->type == Constants\DeviceType::MOBILE ) {
+			if ( Constants\DeviceType::MOBILE == $this->data->device->type ) {
 				$this->data->browser->name = 'Opera Mobile';
 			}
 		}
@@ -530,7 +530,7 @@ trait Browser {
 				$this->data->device->type = Constants\DeviceType::MOBILE;
 			}
 
-			if ( $this->data->browser->name == 'Opera' && $this->data->device->type == Constants\DeviceType::MOBILE ) {
+			if ( 'Opera' == $this->data->browser->name && Constants\DeviceType::MOBILE == $this->data->device->type ) {
 				$this->data->browser->name = 'Opera Mobile';
 
 				if ( preg_match( '/BER/u', $ua ) ) {
@@ -569,7 +569,7 @@ trait Browser {
 				$this->data->os->version = null;
 			}
 
-			if ( $this->data->device->type == '' ) {
+			if ( '' == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::DESKTOP;
 			}
 
@@ -656,11 +656,11 @@ trait Browser {
 				$this->data->os->reset( [ 'name' => 'Firefox OS' ] );
 			}
 
-			if ( $this->data->device->type == Constants\DeviceType::MOBILE || $this->data->device->type == Constants\DeviceType::TABLET ) {
+			if ( Constants\DeviceType::MOBILE == $this->data->device->type || Constants\DeviceType::TABLET == $this->data->device->type ) {
 				$this->data->browser->name = 'Firefox Mobile';
 			}
 
-			if ( $this->data->device->type == '' ) {
+			if ( '' == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::DESKTOP;
 			}
 		}
@@ -741,7 +741,7 @@ trait Browser {
 	/* Netscape */
 
 	private function detectLegacyNetscape( $ua ) {
-		if ( $this->data->device->type == Constants\DeviceType::DESKTOP && $this->data->browser->getName() == '' ) {
+		if ( Constants\DeviceType::DESKTOP == $this->data->device->type && '' == $this->data->browser->getName() ) {
 			if ( ! preg_match( '/compatible;/u', $ua ) ) {
 				if ( preg_match( '/Mozilla\/([123].[0-9]+)/u', $ua, $match ) ) {
 					$this->data->browser->name = 'Netscape Navigator';
@@ -895,7 +895,7 @@ trait Browser {
 				$this->data->device->type = Constants\DeviceType::MOBILE;
 			}
 
-			if ( isset( $this->data->os->name ) && $this->data->os->name == 'Linux' ) {
+			if ( isset( $this->data->os->name ) && 'Linux' == $this->data->os->name ) {
 				$this->data->os->reset();
 			}
 
@@ -1040,7 +1040,7 @@ trait Browser {
 			unset( $this->data->browser->channel );
 			unset( $this->data->browser->mode );
 
-			if ( $this->data->device->type == Constants\DeviceType::DESKTOP ) {
+			if ( Constants\DeviceType::DESKTOP == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::MOBILE;
 				$this->data->browser->mode = 'desktop';
 			}
@@ -1078,7 +1078,7 @@ trait Browser {
 
 			/* UC Browser running on Windows 8 is identifing itself as U2, but instead its a Trident Webview */
 			if ( isset( $this->data->os->name ) && isset( $this->data->os->version ) ) {
-				if ( $this->data->os->name == 'Windows Phone' && $this->data->os->version->toFloat() >= 8 ) {
+				if ( 'Windows Phone' == $this->data->os->name && $this->data->os->version->toFloat() >= 8 ) {
 					$this->data->engine->name = 'Trident';
 					$this->data->browser->mode = '';
 				}
@@ -1090,7 +1090,7 @@ trait Browser {
 					$device->identified |= $this->data->device->identified;
 					$this->data->device = $device;
 
-					if ( ! isset( $this->data->os->name ) || ($this->data->os->name != 'Android' && ( ! isset( $this->data->os->family ) || $this->data->os->family->getName() != 'Android')) ) {
+					if ( ! isset( $this->data->os->name ) || ('Android' != $this->data->os->name && ( ! isset( $this->data->os->family ) || $this->data->os->family->getName() != 'Android')) ) {
 						$this->data->os->name = 'Android';
 					}
 				}
@@ -1105,19 +1105,19 @@ trait Browser {
 
 	private function detectUCEngine( $ua ) {
 		if ( isset( $this->data->browser->name ) ) {
-			if ( $this->data->browser->name == 'UC Browser' ) {
-				if ( ! preg_match( '/UBrowser\//', $ua ) && ($this->data->device->type == 'desktop' || (isset( $this->data->os->name ) && ($this->data->os->name == 'Windows' || $this->data->os->name == 'OS X'))) ) {
+			if ( 'UC Browser' == $this->data->browser->name ) {
+				if ( ! preg_match( '/UBrowser\//', $ua ) && ('desktop' == $this->data->device->type || (isset( $this->data->os->name ) && ('Windows' == $this->data->os->name || 'OS X' == $this->data->os->name ))) ) {
 					$this->data->device->type = Constants\DeviceType::MOBILE;
 					$this->data->browser->mode = 'desktop';
 					$this->data->engine->reset();
 					$this->data->os->reset();
-				} elseif ( ! isset( $this->data->os->name ) || ($this->data->os->name != 'iOS' && $this->data->os->name != 'Windows Phone' && $this->data->os->name != 'Windows' && $this->data->os->name != 'Android' && ( ! isset( $this->data->os->family ) || $this->data->os->family->getName() != 'Android')) ) {
+				} elseif ( ! isset( $this->data->os->name ) || ('iOS' != $this->data->os->name && 'Windows Phone' != $this->data->os->name && 'Windows' != $this->data->os->name && 'Android' != $this->data->os->name && ( ! isset( $this->data->os->family ) || $this->data->os->family->getName() != 'Android')) ) {
 					$this->data->engine->name = 'Gecko';
 					unset( $this->data->engine->version );
 					$this->data->browser->mode = 'proxy';
 				}
 
-				if ( isset( $this->data->engine->name ) && $this->data->engine->name == 'Presto' ) {
+				if ( isset( $this->data->engine->name ) && 'Presto' == $this->data->engine->name ) {
 					$this->data->engine->name = 'Webkit';
 					unset( $this->data->engine->version );
 				}
@@ -1383,7 +1383,7 @@ trait Browser {
 			$this->data->device->type = Constants\DeviceType::TELEVISION;
 		}
 
-		if ( $ua == 'MachBlue' ) {
+		if ( 'MachBlue' == $ua ) {
 			$this->data->os->name = '';
 			$this->data->browser->name = 'MachBlue XT';
 			$this->data->device->type = Constants\DeviceType::TELEVISION;
@@ -1403,7 +1403,7 @@ trait Browser {
 			$this->data->os->name = '';
 			$this->data->os->version = null;
 
-			if ( $this->data->device->type != Constants\DeviceType::TELEVISION ) {
+			if ( Constants\DeviceType::TELEVISION != $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::TELEVISION;
 				$this->data->device->manufacturer = null;
 				$this->data->device->model = null;
@@ -1484,11 +1484,11 @@ trait Browser {
 			$this->data->browser->name = 'webOS Browser';
 			$this->data->browser->type = Constants\BrowserType::BROWSER;
 
-			if ( $this->data->os->name != 'webOS' ) {
+			if ( 'webOS' != $this->data->os->name ) {
 				$this->data->os->name = 'webOS';
 			}
 
-			if ( isset( $this->data->device->manufacturer ) && $this->data->device->manufacturer == 'Apple' ) {
+			if ( isset( $this->data->device->manufacturer ) && 'Apple' == $this->data->device->manufacturer ) {
 				unset( $this->data->device->manufacturer );
 				unset( $this->data->device->model );
 				unset( $this->data->device->identifier );
@@ -1536,7 +1536,7 @@ trait Browser {
 					$this->data->device->type = Constants\DeviceType::TABLET;
 					$this->data->device->identified |= Constants\Id::INFER;
 
-					if ( isset( $this->data->os->name ) && ($this->data->os->name != 'Android' || $this->data->os->name != 'FireOS') ) {
+					if ( isset( $this->data->os->name ) && ('Android' != $this->data->os->name || 'FireOS' != $this->data->os->name ) ) {
 						$this->data->os->name = 'FireOS';
 						$this->data->os->family = new Family( [ 'name' => 'Android' ] );
 						$this->data->os->alias = null;
@@ -1674,7 +1674,7 @@ trait Browser {
 				$this->data->browser->version = new Version( [ 'value' => $match[1] ] );
 			}
 
-			if ( $this->data->device->type == '' ) {
+			if ( '' == $this->data->device->type ) {
 				$this->data->device->type = Constants\DeviceType::DESKTOP;
 			}
 		}
@@ -1708,7 +1708,7 @@ trait Browser {
 				}
 
 				if ( $this->data->browser->version->is( '>=', 4 ) ) {
-					if ( empty( $this->data->os->name ) || $this->data->os->name != 'OS X' ) {
+					if ( empty( $this->data->os->name ) || 'OS X' != $this->data->os->name ) {
 						$this->data->os->name = 'OS X';
 						$this->data->os->version = null;
 					}
@@ -1776,7 +1776,7 @@ trait Browser {
 			$this->data->device->model = null;
 			$this->data->device->type = Constants\DeviceType::DESKTOP;
 
-			if ( isset( $this->data->os->name ) && $this->data->os->name == 'OS X' ) {
+			if ( isset( $this->data->os->name ) && 'OS X' == $this->data->os->name ) {
 				$this->data->os->name = null;
 				$this->data->os->version = null;
 			}
@@ -1805,7 +1805,7 @@ trait Browser {
 				$this->data->browser->version = new Version( [ 'value' => $match[1], 'details' => 3 ] );
 			}
 
-			if ( isset( $this->data->os->name ) && $this->data->browser->version && $this->data->os->name == 'Windows' && $this->data->browser->version->toFloat() < 4 ) {
+			if ( isset( $this->data->os->name ) && $this->data->browser->version && 'Windows' == $this->data->os->name && $this->data->browser->version->toFloat() < 4 ) {
 				$this->data->browser->version->details = 1;
 			}
 		}
@@ -1833,7 +1833,7 @@ trait Browser {
 			$this->data->browser->version = new Version( [ 'value' => $match[1] ] );
 			$this->data->browser->type = Constants\BrowserType::BROWSER;
 
-			if ( isset( $this->data->device->manufacturer ) && $this->data->device->manufacturer == 'Apple' ) {
+			if ( isset( $this->data->device->manufacturer ) && 'Apple' == $this->data->device->manufacturer ) {
 				$this->data->device->reset();
 			}
 
@@ -1882,7 +1882,7 @@ trait Browser {
 			$this->data->browser->type = Constants\BrowserType::BROWSER;
 			$this->data->browser->channel = '';
 
-			if ( ! isset( $this->data->os->name ) && $match[1] == 'QQBrowser' ) {
+			if ( ! isset( $this->data->os->name ) && 'QQBrowser' == $match[1] ) {
 				$this->data->os->name = 'Windows';
 			}
 
@@ -2045,7 +2045,7 @@ trait Browser {
 				switch ( $match[3] ) {
 					case 'P':
 						$this->data->device->type = Constants\DeviceType::MOBILE;
-						if ( $this->data->os->name == 'iOS' && empty( $this->data->device->model ) ) {
+						if ( 'iOS' == $this->data->os->name && empty( $this->data->device->model ) ) {
 							$this->data->device->manufacturer = 'Apple';
 							$this->data->device->model = 'iPhone';
 							$this->data->device->identified = Constants\Id::MATCH_UA;
@@ -2054,7 +2054,7 @@ trait Browser {
 
 					case 'T':
 						$this->data->device->type = Constants\DeviceType::TABLET;
-						if ( $this->data->os->name == 'iOS' && empty( $this->data->device->model ) ) {
+						if ( 'iOS' == $this->data->os->name && empty( $this->data->device->model ) ) {
 							$this->data->device->manufacturer = 'Apple';
 							$this->data->device->model = 'iPad';
 							$this->data->device->identified = Constants\Id::MATCH_UA;
@@ -2099,7 +2099,7 @@ trait Browser {
 			$this->data->browser->version = new Version( [ 'value' => $match[1] ] );
 			$this->data->browser->type = Constants\BrowserType::BROWSER;
 
-			if ( isset( $this->data->device->manufacturer ) && $this->data->device->manufacturer == 'Apple' ) {
+			if ( isset( $this->data->device->manufacturer ) && 'Apple' == $this->data->device->manufacturer ) {
 				unset( $this->data->device->manufacturer );
 				unset( $this->data->device->model );
 				unset( $this->data->device->identifier );
@@ -2160,7 +2160,7 @@ trait Browser {
 			$this->data->browser->mode = 'proxy';
 			$this->data->browser->type = Constants\BrowserType::BROWSER;
 
-			if ( $this->data->device->type != Constants\DeviceType::MOBILE ) {
+			if ( Constants\DeviceType::MOBILE != $this->data->device->type ) {
 				$this->data->os->reset();
 				$this->data->device->type = Constants\DeviceType::MOBILE;
 			}

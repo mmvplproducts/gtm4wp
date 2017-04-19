@@ -170,7 +170,7 @@ trait Application {
 
 			$this->data->device->model = $match[3];
 			$this->data->device->identified |= Constants\Id::PATTERN;
-			$this->data->device->type = $match[1] == ' Tablet' ? Constants\DeviceType::TABLET : Constants\DeviceType::MOBILE;
+			$this->data->device->type = ' Tablet' == $match[1] ? Constants\DeviceType::TABLET : Constants\DeviceType::MOBILE;
 
 			$device = Data\DeviceModels::identify( 'android', $match[3] );
 			if ( $device->identified ) {
@@ -255,7 +255,7 @@ trait Application {
 			$this->data->device->model = $match[5];
 			$this->data->device->identified |= Constants\Id::PATTERN;
 
-			if ( $match[2] == 'Android' ) {
+			if ( 'Android' == $match[2] ) {
 				$this->data->os->reset([
 					'name'      => 'Android',
 					'version'   => new Version( [ 'value' => str_replace( '_', '.', $match[3] ) ] ),
@@ -268,7 +268,7 @@ trait Application {
 				}
 			}
 
-			if ( $match[2] == 'WP7' ) {
+			if ( 'WP7' == $match[2] ) {
 				$this->data->os->reset([
 					'name'      => 'Windows Phone',
 					'version'   => new Version( [ 'value' => $match[3], 'details' => 2 ] ),
@@ -281,7 +281,7 @@ trait Application {
 				}
 			}
 
-			if ( $match[2] == 'S60Version' ) {
+			if ( 'S60Version' == $match[2] ) {
 				$this->data->os->reset([
 					'name'      => 'Series60',
 					'version'   => new Version( [ 'value' => $match[3] ] ),
@@ -295,7 +295,7 @@ trait Application {
 				}
 			}
 
-			if ( $match[2] == 'WP7' ) {
+			if ( 'WP7' == $match[2] ) {
 				$this->data->os->reset([
 					'name'      => 'Windows Phone',
 					'version'   => new Version( [ 'value' => $match[3], 'details' => 2 ] ),
@@ -386,13 +386,13 @@ trait Application {
 		/* Facebook for Android */
 
 		if ( preg_match( '/^\[FBAN\/(FB4A|PAAA);.*FBDV\/([^;]+);.*FBSV\/([0-9\.]+);/u', $ua, $match ) ) {
-			if ( $match[1] == 'FB4A' ) {
+			if ( 'FB4A' == $match[1] ) {
 				$this->data->browser->name = 'Facebook';
 				$this->data->browser->version = null;
 				$this->data->browser->type = Constants\BrowserType::APP_SOCIAL;
 			}
 
-			if ( $match[1] == 'PAAA' ) {
+			if ( 'PAAA' == $match[1] ) {
 				$this->data->browser->name = 'Facebook Pages';
 				$this->data->browser->version = null;
 				$this->data->browser->type = Constants\BrowserType::APP_SOCIAL;
