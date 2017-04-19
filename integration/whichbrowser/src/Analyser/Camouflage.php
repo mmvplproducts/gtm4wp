@@ -130,7 +130,7 @@ trait Camouflage {
 	}
 
 	private function &detectCamouflagedUCBrowser( $ua ) {
-		if ( $ua == 'Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/' ) {
+		if ( 'Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.2.3.4) Gecko/' == $ua ) {
 
 			if ( ! $this->data->isBrowser( 'UC Browser' ) ) {
 				$this->data->browser->name = 'UC Browser';
@@ -160,14 +160,14 @@ trait Camouflage {
 	}
 
 	private function &detectCamouflagedBasedOnEngines() {
-		if ( isset( $this->data->engine->name ) && $this->data->browser->mode != 'proxy' ) {
+		if ( isset( $this->data->engine->name ) && 'proxy' != $this->data->browser->mode ) {
 
 			/* If it claims not to be Trident, but it is probably Trident running camouflage mode */
 			if ( $this->options->engine & Constants\EngineType::TRIDENT ) {
 				$this->data->features[] = 'trident';
 
-				if ( $this->data->engine->name && $this->data->engine->name != 'Trident' ) {
-					$this->data->camouflage = ! isset( $this->data->browser->name ) || ($this->data->browser->name != 'Maxthon' && $this->data->browser->name != 'Motorola WebKit');
+				if ( $this->data->engine->name && 'Trident' != $this->data->engine->name ) {
+					$this->data->camouflage = ! isset( $this->data->browser->name ) || ('Maxthon' != $this->data->browser->name && 'Motorola WebKit' != $this->data->browser->name );
 				}
 			}
 
@@ -175,11 +175,11 @@ trait Camouflage {
 			if ( $this->options->engine & Constants\EngineType::PRESTO ) {
 				$this->data->features[] = 'presto';
 
-				if ( $this->data->engine->name && $this->data->engine->name != 'Presto' ) {
+				if ( $this->data->engine->name && 'Presto' != $this->data->engine->name ) {
 					$this->data->camouflage = true;
 				}
 
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Internet Explorer' ) {
+				if ( isset( $this->data->browser->name ) && 'Internet Explorer' == $this->data->browser->name ) {
 					$this->data->camouflage = true;
 				}
 			}
@@ -188,11 +188,11 @@ trait Camouflage {
 			if ( $this->options->engine & Constants\EngineType::GECKO ) {
 				$this->data->features[] = 'gecko';
 
-				if ( $this->data->engine->name && $this->data->engine->name != 'Gecko' ) {
+				if ( $this->data->engine->name && 'Gecko' != $this->data->engine->name ) {
 					$this->data->camouflage = true;
 				}
 
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Internet Explorer' ) {
+				if ( isset( $this->data->browser->name ) && 'Internet Explorer' == $this->data->browser->name ) {
 					$this->data->camouflage = true;
 				}
 			}
@@ -201,32 +201,32 @@ trait Camouflage {
 			if ( $this->options->engine & Constants\EngineType::WEBKIT ) {
 				$this->data->features[] = 'webkit';
 
-				if ( $this->data->engine->name && ($this->data->engine->name != 'Blink' && $this->data->engine->name != 'Webkit') ) {
+				if ( $this->data->engine->name && ('Blink' != $this->data->engine->name && 'Webkit' != $this->data->engine->name ) ) {
 					$this->data->camouflage = true;
 				}
 
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Internet Explorer' ) {
+				if ( isset( $this->data->browser->name ) && 'Internet Explorer' == $this->data->browser->name ) {
 					$this->data->camouflage = true;
 				}
 
 				/* IE 11 on mobile now supports Webkit APIs */
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Mobile Internet Explorer'
+				if ( isset( $this->data->browser->name ) && 'Mobile Internet Explorer' == $this->data->browser->name
 					&& isset( $this->data->browser->version ) && $this->data->browser->version->toFloat() >= 11
-					&& isset( $this->data->os->name ) && $this->data->os->name == 'Windows Phone'
+					&& isset( $this->data->os->name ) && 'Windows Phone' == $this->data->os->name
 				) {
 					$this->data->camouflage = false;
 				}
 
 				/* IE 11 Developer Preview now supports  Webkit APIs */
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Internet Explorer'
+				if ( isset( $this->data->browser->name ) && 'Internet Explorer' == $this->data->browser->name
 					&& isset( $this->data->browser->version ) && $this->data->browser->version->toFloat() >= 11
-					&& isset( $this->data->os->name ) && $this->data->os->name == 'Windows'
+					&& isset( $this->data->os->name ) && 'Windows' == $this->data->os->name
 				) {
 					$this->data->camouflage = false;
 				}
 
 				/* EdgeHTML rendering engine also appears to be WebKit */
-				if ( isset( $this->data->engine->name ) && $this->data->engine->name == 'EdgeHTML' ) {
+				if ( isset( $this->data->engine->name ) && 'EdgeHTML' == $this->data->engine->name ) {
 					$this->data->camouflage = false;
 				}
 
@@ -239,16 +239,16 @@ trait Camouflage {
 			if ( $this->options->engine & Constants\EngineType::CHROMIUM ) {
 				$this->data->features[] = 'chrome';
 
-				if ( $this->data->engine->name && ($this->data->engine->name != 'EdgeHTML' && $this->data->engine->name != 'Blink' && $this->data->engine->name != 'Webkit') ) {
+				if ( $this->data->engine->name && ('EdgeHTML' != $this->data->engine->name && 'Blink' != $this->data->engine->name && 'Webkit' != $this->data->engine->name ) ) {
 					$this->data->camouflage = true;
 				}
 			}
 
 			/* If it claims to be Safari and uses V8, it is probably an Android device running camouflage mode */
-			if ( $this->data->engine->name == 'Webkit' && $this->options->engine & Constants\EngineType::V8 ) {
+			if ( 'Webkit' == $this->data->engine->name && $this->options->engine & Constants\EngineType::V8 ) {
 				$this->data->features[] = 'v8';
 
-				if ( isset( $this->data->browser->name ) && $this->data->browser->name == 'Safari' ) {
+				if ( isset( $this->data->browser->name ) && 'Safari' == $this->data->browser->name ) {
 					$this->data->camouflage = true;
 				}
 			}
@@ -259,7 +259,7 @@ trait Camouflage {
 
 	private function &detectCamouflagedBasedOnFeatures() {
 		if ( isset( $this->data->browser->name ) && isset( $this->data->os->name ) ) {
-			if ( $this->data->os->name == 'iOS' && $this->data->browser->name != 'Opera Mini' && $this->data->browser->name != 'UC Browser' && isset( $this->data->os->version ) ) {
+			if ( 'iOS' == $this->data->os->name && 'Opera Mini' != $this->data->browser->name && 'UC Browser' != $this->data->browser->name && isset( $this->data->os->version ) ) {
 
 				if ( $this->data->os->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::SANDBOX ) {
 					$this->data->features[] = 'foundSandbox';
@@ -277,7 +277,7 @@ trait Camouflage {
 				}
 			}
 
-			if ( $this->data->os->name != 'iOS' && $this->data->browser->name == 'Safari' && isset( $this->data->browser->version ) ) {
+			if ( 'iOS' != $this->data->os->name && 'Safari' == $this->data->browser->name && isset( $this->data->browser->version ) ) {
 
 				if ( $this->data->browser->version->toFloat() < 4.0 && $this->options->features & Constants\Feature::APPCACHE ) {
 					$this->data->features[] = 'foundAppCache';

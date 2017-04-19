@@ -108,9 +108,9 @@ trait Television {
 
 		/* NetCast */
 
-		if ( $ua == 'Mozilla/5.0 (X11; Linux; ko-KR) AppleWebKit/534.26+ (KHTML, like Gecko) Version/5.0 Safari/534.26+' ||
-			$ua == 'Mozilla/5.0 (DirectFB; Linux; ko-KR) AppleWebKit/534.26 (KHTML, like Gecko) Version/5.0 Safari/534.26' ||
-			$ua == 'Mozilla/5.0 (DirectFB; Linux; ko-KR) AppleWebKit/534.26+ (KHTML, like Gecko) Version/5.0 Safari/534.26+' ) {
+		if ( 'Mozilla/5.0 (X11; Linux; ko-KR) AppleWebKit/534.26+ (KHTML, like Gecko) Version/5.0 Safari/534.26+' == $ua ||
+			'Mozilla/5.0 (DirectFB; Linux; ko-KR) AppleWebKit/534.26 (KHTML, like Gecko) Version/5.0 Safari/534.26' == $ua ||
+			'Mozilla/5.0 (DirectFB; Linux; ko-KR) AppleWebKit/534.26+ (KHTML, like Gecko) Version/5.0 Safari/534.26+' == $ua ) {
 			$this->data->device->manufacturer = 'LG';
 			$this->data->device->series = 'NetCast TV 2012';
 			$this->data->device->type = Constants\DeviceType::TELEVISION;
@@ -246,7 +246,7 @@ trait Television {
 			$this->data->device->identified |= Constants\Id::MATCH_UA;
 
 			if ( preg_match( '/SonyCEBrowser\/[0-9.]+ \((?:BDPlayer; |DTV[0-9]+\/)?([^;_]+)/u', $ua, $match ) ) {
-				if ( $match[1] != 'ModelName' ) {
+				if ( 'ModelName' != $match[1] ) {
 					$this->data->device->model = $match[1];
 				}
 			}
@@ -361,7 +361,7 @@ trait Television {
 				$this->data->device->generic = false;
 			}
 
-			if ( $this->data->device->model == 'SMT-E5015' ) {
+			if ( 'SMT-E5015' == $this->data->device->model ) {
 				$this->data->device->model = 'Olleh SkyLife Smart Settopbox';
 			}
 		}
@@ -478,7 +478,7 @@ trait Television {
 			$this->data->os->reset();
 
 			$this->data->device->manufacturer = 'ADB';
-			$this->data->device->model = ($match[1] != 'Unknown' ? str_replace( 'ADB', '', $match[1] ) . ' ' : '') . 'IPTV receiver';
+			$this->data->device->model = ('Unknown' != $match[1] ? str_replace( 'ADB', '', $match[1] ) . ' ' : '') . 'IPTV receiver';
 			$this->data->device->type = Constants\DeviceType::TELEVISION;
 			$this->data->device->identified |= Constants\Id::MATCH_UA;
 			$this->data->device->generic = false;
@@ -789,7 +789,7 @@ trait Television {
 				if ( isset( $data[ $vendorName ] ) ) {
 					$this->data->device->manufacturer = $data[ $vendorName ];
 
-					if ( $this->data->device->manufacturer == 'LG' ) {
+					if ( 'LG' == $this->data->device->manufacturer ) {
 						switch ( $modelName ) {
 							case 'LGE2D2012M':
 								$this->data->device->series = 'NetCast TV 2012';
@@ -803,7 +803,7 @@ trait Television {
 						}
 					}
 
-					if ( $this->data->device->manufacturer == 'Panasonic' ) {
+					if ( 'Panasonic' == $this->data->device->manufacturer ) {
 						if ( substr( $modelName, 0, 6 ) != 'PANATV' ) {
 							$this->data->device->model = $modelName;
 						}
@@ -948,11 +948,11 @@ trait Television {
 						break;
 
 					default:
-						if ( $vendorName != '' && ! in_array( $vendorName, [ 'OEM', 'vendorName' ] ) ) {
+						if ( '' != $vendorName && ! in_array( $vendorName, [ 'OEM', 'vendorName' ] ) ) {
 							$this->data->device->manufacturer = $vendorName;
 						}
 
-						if ( $modelName != '' && ! in_array( $modelName, [ 'dvb', 'modelName', 'undefined-model-name', 'N/A' ] ) ) {
+						if ( '' != $modelName && ! in_array( $modelName, [ 'dvb', 'modelName', 'undefined-model-name', 'N/A' ] ) ) {
 							$this->data->device->model = $modelName;
 						}
 
@@ -1011,27 +1011,27 @@ trait Television {
 	/* Try to reformat some of the detected generic models */
 
 	private function improveModelsOnDeviceTypeTelevision() {
-		if ( $this->data->device->type != Constants\DeviceType::TELEVISION ) {
+		if ( Constants\DeviceType::TELEVISION != $this->data->device->type ) {
 			return;
 		}
 
 		if ( isset( $this->data->device->model ) && isset( $this->data->device->manufacturer ) ) {
 
-			if ( $this->data->device->manufacturer == 'Dune HD' ) {
+			if ( 'Dune HD' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/tv([0-9]+[a-z]?)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = 'TV-' . strtoupper( $match[1] );
 				}
 
-				if ( $this->data->device->model == 'connect' ) {
+				if ( 'connect' == $this->data->device->model ) {
 					$this->data->device->model = 'Connect';
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Humax' ) {
+			if ( 'Humax' == $this->data->device->manufacturer ) {
 				$this->data->device->series = 'Digital Receiver';
 			}
 
-			if ( $this->data->device->manufacturer == 'Inverto' ) {
+			if ( 'Inverto' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/IDL[ -]?([0-9]+.*)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = 'IDL ' . $match[1];
 				}
@@ -1041,11 +1041,11 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'HyperPanel' ) {
+			if ( 'HyperPanel' == $this->data->device->manufacturer ) {
 				$this->data->device->model = strtok( strtoupper( $this->data->device->model ), ' ' );
 			}
 
-			if ( $this->data->device->manufacturer == 'LG' ) {
+			if ( 'LG' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/(?:ATSC|DVB)-(.*)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = $match[1];
 					$this->data->device->generic = false;
@@ -1062,7 +1062,7 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Loewe' ) {
+			if ( 'Loewe' == $this->data->device->manufacturer ) {
 				$this->data->device->series = 'Smart TV';
 
 				if ( preg_match( '/((?:ID|SL)[0-9]+)/u', $this->data->device->model, $match ) ) {
@@ -1071,7 +1071,7 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Philips' ) {
+			if ( 'Philips' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/[0-9][0-9]([A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9])/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = $match[1];
 					$this->data->device->generic = false;
@@ -1090,7 +1090,7 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Toshiba' ) {
+			if ( 'Toshiba' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/DTV_(.*)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = 'Regza ' . $match[1];
 					$this->data->device->generic = false;
@@ -1113,18 +1113,18 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Selevision' ) {
+			if ( 'Selevision' == $this->data->device->manufacturer ) {
 				$this->data->device->model = str_replace( 'Selevision ', '', $this->data->device->model );
 			}
 
-			if ( $this->data->device->manufacturer == 'Sharp' ) {
+			if ( 'Sharp' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/[0-9][0-9]([A-Z]+[0-9]+[A-Z]+)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = $match[1];
 					$this->data->device->generic = false;
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Sony' ) {
+			if ( 'Sony' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/(BDP[0-9]+G)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = $match[1];
 					$this->data->device->series = 'Blu-ray Player';
@@ -1138,7 +1138,7 @@ trait Television {
 				}
 			}
 
-			if ( $this->data->device->manufacturer == 'Pioneer' ) {
+			if ( 'Pioneer' == $this->data->device->manufacturer ) {
 				if ( preg_match( '/(BDP-[0-9]+)/u', $this->data->device->model, $match ) ) {
 					$this->data->device->model = $match[1];
 					$this->data->device->series = 'Blu-ray Player';

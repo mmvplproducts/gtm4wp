@@ -36,11 +36,11 @@ trait Pda {
 			$this->data->device->identified |= Constants\Id::MATCH_UA;
 			$this->data->device->type = Constants\DeviceType::PDA;
 
-			if ( $match[1] == 'CASSIOPEIA BE' ) {
+			if ( 'CASSIOPEIA BE' == $match[1] ) {
 				$this->data->device->model = 'Cassiopeia';
 			}
 
-			if ( $match[1] == 'PPP101' ) {
+			if ( 'PPP101' == $match[1] ) {
 				$this->data->device->model = 'Pocket PostPet';
 				$this->data->device->carrier = 'DoCoMo';
 			}

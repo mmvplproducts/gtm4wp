@@ -49,11 +49,11 @@ class Base {
 			if ( ! is_null( $value ) ) {
 				$line = $key . ': ';
 
-				if ( $key == 'version' ) {
+				if ( 'version' == $key ) {
 					$line .= 'new Version({ ' . $value->toJavaScript() . ' })';
-				} elseif ( $key == 'family' ) {
+				} elseif ( 'family' == $key ) {
 					$line .= 'new Family({ ' . $value->toJavaScript() . ' })';
-				} elseif ( $key == 'using' ) {
+				} elseif ( 'using' == $key ) {
 					$line .= 'new Using({ ' . $value->toJavaScript() . ' })';
 				} else {
 					switch ( gettype( $value ) ) {

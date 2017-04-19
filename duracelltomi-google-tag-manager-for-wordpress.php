@@ -18,7 +18,7 @@ $gtp4wp_plugin_basename = plugin_basename( __FILE__ );
 require_once( GTM4WP_PATH . '/common/readoptions.php' );
 
 function gtm4wp_init() {
-	load_plugin_textdomain( 'duracelltomi-google-tag-manager', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'duracelltomi-google-tag-manager', false, dirname( $gtp4wp_plugin_basename ) . '/languages/' );
 	if ( is_admin() ) {
 		require_once( GTM4WP_PATH . '/admin/admin.php' );
 	} else {

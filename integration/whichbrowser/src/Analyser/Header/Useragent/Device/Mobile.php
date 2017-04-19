@@ -75,7 +75,7 @@ trait Mobile {
 
 		if ( preg_match( '/Nokia[- \/]?([^\/\);]+)/ui', $ua, $match ) ) {
 
-			if ( $match[1] == 'Browser' ) {
+			if ( 'Browser' == $match[1] ) {
 				return;
 			}
 
@@ -92,7 +92,7 @@ trait Mobile {
 					$device->identified |= $this->data->device->identified;
 					$this->data->device = $device;
 
-					if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Nokia Asha Platform' ) {
+					if ( ! isset( $this->data->os->name ) || 'Nokia Asha Platform' != $this->data->os->name ) {
 						$this->data->os->name = 'Nokia Asha Platform';
 						$this->data->os->version = new Version( [ 'value' => '1.0' ] );
 
@@ -109,7 +109,7 @@ trait Mobile {
 					$device->identified |= $this->data->device->identified;
 					$this->data->device = $device;
 
-					if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Series40' ) {
+					if ( ! isset( $this->data->os->name ) || 'Series40' != $this->data->os->name ) {
 						$this->data->os->name = 'Series40';
 						$this->data->os->version = null;
 					}
@@ -122,7 +122,7 @@ trait Mobile {
 					$device->identified |= $this->data->device->identified;
 					$this->data->device = $device;
 
-					if ( ! isset( $this->data->os->name ) || $this->data->os->name != 'Series60' ) {
+					if ( ! isset( $this->data->os->name ) || 'Series60' != $this->data->os->name ) {
 						$this->data->os->name = 'Series60';
 						$this->data->os->version = null;
 						$this->data->os->family = new Family( [ 'name' => 'Symbian' ] );
@@ -1344,7 +1344,7 @@ trait Mobile {
 	}
 
 	function identifyBasedOnId( $id ) {
-		if ( $this->data->device->type != 'mobile' ) {
+		if ( 'mobile' != $this->data->device->type ) {
 			return;
 		}
 
