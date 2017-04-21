@@ -199,7 +199,7 @@ function gtm4wp_woocommerce_datalayer_filter_items( $data_layer ) {
 			$order_id = $order_id_filtered;
 		}
 
-		$order_key = apply_filters( 'woocommerce_thankyou_order_key', empty( $_GET['key'] ) ? '' : wc_clean( $_GET['key'] ) );
+		$order_key = apply_filters( 'woocommerce_thankyou_order_key', empty( $_GET['key'] ) ? '' : wc_clean( wp_unslash( $_GET['key'] ) ) );
 
 		if ( $order_id > 0 ) {
 			$order = new WC_Order( $order_id );
