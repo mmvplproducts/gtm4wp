@@ -194,7 +194,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 
 	if ( is_search() ) {
 		$data_layer['siteSearchTerm'] = get_search_query();
-		$data_layer['siteSearchFrom'] = ( isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '' );
+		$data_layer['siteSearchFrom'] = ( isset( $_SERVER['HTTP_REFERER'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) ) : '' );
 		$data_layer['siteSearchResults'] = $wp_query->post_count;
 	}
 
@@ -218,7 +218,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 
 		$gtp4wp_headers = getallheaders();
 		if ( ( false === $gtp4wp_headers ) && isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			$gtp4wp_headers = $_SERVER['HTTP_USER_AGENT'];
+			$gtp4wp_headers = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
 		}
 		if ( false !== $gtp4wp_headers ) {
 			$detected = new WhichBrowser\Parser( $gtp4wp_headers );
@@ -379,7 +379,7 @@ function gtm4wp_add_basic_datalayer_data( $data_layer ) {
 		$data_layer['weatherWindSpeed'] = 0;
 		$data_layer['weatherWindDeg'] = 0;
 
-		$gtm4wp_sessionid = array_key_exists( 'gtm4wp_sessoionid', $_COOKIE ) ? $_COOKIE['gtm4wp_sessoionid'] : '';
+		$gtm4wp_sessionid = ( isset( $_COOKIE['gtm4wp_sessoionid'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['gtm4wp_sessoionid'] ) ) : '' );
 		// this is needed so that nobody can do a hack by editing our cookie
 		$gtm4wp_sessionid = str_replace( "'", '', trim( basename( $gtm4wp_sessionid ) ) );
 
@@ -404,7 +404,7 @@ function gtm4wp_wp_loaded() {
 	global $gtm4wp_options;
 
 	if ( $gtm4wp_options[ GTM4WP_OPTION_INCLUDE_WEATHER ] ) {
-		$gtm4wp_sessionid = array_key_exists( 'gtm4wp_sessoionid', $_COOKIE ) ? $_COOKIE['gtm4wp_sessoionid'] : '';
+		$gtm4wp_sessionid = ( isset( $_COOKIE['gtm4wp_sessoionid'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['gtm4wp_sessoionid'] ) ) : '' );
 		// this is needed so that nobody can do a hack by editing our cookie
 		$gtm4wp_sessionid = str_replace( "'", '', trim( basename( $gtm4wp_sessionid ) ) );
 
@@ -416,7 +416,7 @@ function gtm4wp_wp_loaded() {
 		$weatherdata = get_transient( 'gtm4wp-weatherdata-' . $gtm4wp_sessionid );
 
 		if ( false === $weatherdata ) {
-			$gtm4wp_geodata = vip_safe_wp_remote_get( 'http://www.geoplugin.net/php.gp?ip=' . $_SERVER['REMOTE_ADDR'] );
+			$gtm4wp_geodata = vip_safe_wp_remote_get( 'http://www.geoplugin.net/php.gp?ip=' . sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) );
 
 			if ( is_array( $gtm4wp_geodata ) && ( 200 == $gtm4wp_geodata['response']['code'] ) ) {
 				$gtm4wp_geodata = unserialize( $gtm4wp_geodata['body'] );
