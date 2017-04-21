@@ -240,7 +240,7 @@ class DeviceModels {
 								$device->carrier = $match['carrier'];
 							}
 
-							if ( is_null($device->manufacturer) && is_null($device->model) ) {
+							if ( is_null( $device->manufacturer ) && is_null( $device->model ) ) {
 								$device->identified = Constants\Id::PATTERN;
 							}
 
