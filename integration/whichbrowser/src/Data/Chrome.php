@@ -2,30 +2,29 @@
 
 namespace WhichBrowser\Data;
 
-class Chrome
-{
-    public static $DESKTOP = [];
-    public static $MOBILE = [];
+class Chrome {
 
-    public static function getChannel($platform, $version)
-    {
-        require_once __DIR__ . '/../../data/browsers-chrome.php';
+	public static $DESKTOP = [];
+	public static $MOBILE = [];
 
-        $version = implode('.', array_slice(explode('.', $version), 0, 3));
+	public static function getChannel( $platform, $version ) {
+		require_once __DIR__ . '/../../data/browsers-chrome.php';
 
-        switch ($platform) {
-            case 'desktop':
-                if (isset(Chrome::$DESKTOP[$version])) {
-                    return Chrome::$DESKTOP[$version];
-                }
-                break;
-            case 'mobile':
-                if (isset(Chrome::$MOBILE[$version])) {
-                    return Chrome::$MOBILE[$version];
-                }
-                break;
-        }
+		$version = implode( '.', array_slice( explode( '.', $version ), 0, 3 ) );
 
-        return 'canary';
-    }
+		switch ( $platform ) {
+			case 'desktop':
+				if ( isset( Chrome::$DESKTOP[ $version ] ) ) {
+					return Chrome::$DESKTOP[ $version ];
+				}
+				break;
+			case 'mobile':
+				if ( isset( Chrome::$MOBILE[ $version ] ) ) {
+					return Chrome::$MOBILE[ $version ];
+				}
+				break;
+		}
+
+		return 'canary';
+	}
 }

@@ -96,8 +96,8 @@ define( 'GTM4WP_PLACEMENT_OFF',           3 );
 $gtm4wp_options = array();
 
 $gtm4wp_defaultoptions = array(
-	GTM4WP_OPTION_GTM_CODE            => "",
-	GTM4WP_OPTION_DATALAYER_NAME      => "",
+	GTM4WP_OPTION_GTM_CODE            => '',
+	GTM4WP_OPTION_DATALAYER_NAME      => '',
 	GTM4WP_OPTION_GTM_PLACEMENT       => GTM4WP_PLACEMENT_FOOTER,
 
 	GTM4WP_OPTION_INCLUDE_REMARKETING   => false,
@@ -121,24 +121,24 @@ $gtm4wp_defaultoptions = array(
 	GTM4WP_OPTION_INCLUDE_WEATHER       => false,
 	GTM4WP_OPTION_INCLUDE_WEATHERUNITS  => 0,
 	GTM4WP_OPTION_INCLUDE_WEATHEROWMAPI => '',
-  GTM4WP_OPTION_INCLUDE_SITEID        => false,
-  GTM4WP_OPTION_INCLUDE_SITENAME      => false,
-	
+	GTM4WP_OPTION_INCLUDE_SITEID        => false,
+	GTM4WP_OPTION_INCLUDE_SITENAME      => false,
+
 	GTM4WP_OPTION_EVENTS_OUTBOUND    => false,
 	GTM4WP_OPTION_EVENTS_DOWNLOADS   => false,
-	GTM4WP_OPTION_EVENTS_DWLEXT      => "pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar,gz,tar",
+	GTM4WP_OPTION_EVENTS_DWLEXT      => 'pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar,gz,tar',
 	GTM4WP_OPTION_EVENTS_EMAILCLICKS => false,
 	GTM4WP_OPTION_EVENTS_FORMMOVE    => true,
 	GTM4WP_OPTION_EVENTS_SOCIAL      => false,
 	GTM4WP_OPTION_EVENTS_YOUTUBE     => false,
 	GTM4WP_OPTION_EVENTS_VIMEO       => false,
 	GTM4WP_OPTION_EVENTS_SOUNDCLOUD  => false,
-	
+
 	GTM4WP_OPTION_SCROLLER_ENABLED      => false,
 	GTM4WP_OPTION_SCROLLER_DEBUGMODE    => false,
 	GTM4WP_OPTION_SCROLLER_CALLBACKTIME => 100,
 	GTM4WP_OPTION_SCROLLER_DISTANCE     => 150,
-	GTM4WP_OPTION_SCROLLER_CONTENTID    => "content",
+	GTM4WP_OPTION_SCROLLER_CONTENTID    => 'content',
 	GTM4WP_OPTION_SCROLLER_READERTIME   => 60,
 
 	GTM4WP_OPTION_BLACKLIST_ENABLE      => 0,
@@ -182,12 +182,12 @@ $gtm4wp_defaultoptions = array(
 	GTM4WP_OPTION_INTEGRATE_WCREMARKETING     => false,
 	GTM4WP_OPTION_INTEGRATE_WCUSESKU          => false,
 
-	GTM4WP_OPTION_INTEGRATE_WPECOMMERCE => false
+	GTM4WP_OPTION_INTEGRATE_WPECOMMERCE => false,
 );
 
 function gtm4wp_reload_options() {
 	global $gtm4wp_defaultoptions;
-	
+
 	$storedoptions = (array) get_option( GTM4WP_OPTIONS );
 	if ( ! is_array( $gtm4wp_defaultoptions ) ) {
 		$gtm4wp_defaultoptions = array();
@@ -201,12 +201,12 @@ function gtm4wp_reload_options() {
 
 		unset( $storedoptions[ GTM4WP_OPTION_INTEGRATE_WOOCOMMERCE ] );
 	}
-	
+
 	return array_merge( $gtm4wp_defaultoptions, $storedoptions );
 }
 
 function gtp4wp_debug_file( $debug_data ) {
-	$fp = fopen( dirname( __FILE__ ) . "/" . date("Y-m-d-H-i-s-u") . ".txt", "w" );
+	$fp = fopen( dirname( __FILE__ ) . '/' . date( 'Y-m-d-H-i-s-u' ) . '.txt', 'w' );
 	if ( $fp ) {
 		fwrite( $fp, $debug_data );
 		fclose( $fp );

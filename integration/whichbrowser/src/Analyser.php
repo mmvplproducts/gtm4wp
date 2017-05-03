@@ -5,44 +5,40 @@ namespace WhichBrowser;
 use WhichBrowser\Constants;
 use WhichBrowser\Model\Main;
 
-class Analyser
-{
-    use Analyser\Header, Analyser\Derive, Analyser\Corrections, Analyser\Camouflage;
+class Analyser {
 
-    private $data;
+	use Analyser\Header, Analyser\Derive, Analyser\Corrections, Analyser\Camouflage;
 
-    private $options;
+	private $data;
 
-    private $headers = [];
+	private $options;
 
-    public function __construct($headers, $options = [])
-    {
-        $this->headers = $headers;
-        $this->options = (object) $options;
-    }
+	private $headers = [];
 
-    public function setData(&$data)
-    {
-        $this->data =& $data;
-    }
+	public function __construct( $headers, $options = [] ) {
+		$this->headers = $headers;
+		$this->options = (object) $options;
+	}
 
-    public function &getData()
-    {
-        return $this->data;
-    }
+	public function setData( &$data ) {
+		$this->data =& $data;
+	}
 
-    public function analyse()
-    {
-        if (!isset($this->data)) {
-            $this->data = new Main();
-        }
+	public function &getData() {
+		return $this->data;
+	}
 
-        /* Start the actual analysing steps */
+	public function analyse() {
+		if ( ! isset( $this->data ) ) {
+			$this->data = new Main();
+		}
 
-        $this->analyseHeaders()
-             ->deriveInformation()
-             ->applyCorrections()
-             ->detectCamouflage()
-             ->deriveDeviceSubType();
-    }
+		/* Start the actual analysing steps */
+
+		$this->analyseHeaders()
+			 ->deriveInformation()
+			 ->applyCorrections()
+			 ->detectCamouflage()
+			 ->deriveDeviceSubType();
+	}
 }

@@ -5,35 +5,34 @@ namespace WhichBrowser\Analyser\Header;
 use WhichBrowser\Parser;
 use WhichBrowser\Constants;
 
-class UCBrowserOld
-{
-    public function __construct($header, &$data)
-    {
-        $this->data =& $data;
+class UCBrowserOld {
 
-        if ($this->data->device->type == Constants\DeviceType::DESKTOP) {
-            $this->data->device->type = Constants\DeviceType::MOBILE;
+	public function __construct( $header, &$data ) {
+		$this->data =& $data;
 
-            $this->data->os->reset();
-        }
+		if ( Constants\DeviceType::DESKTOP == $this->data->device->type ) {
+			$this->data->device->type = Constants\DeviceType::MOBILE;
 
-        if (!isset($this->data->browser->name) || $this->data->browser->name != 'UC Browser') {
-            $this->data->browser->name = 'UC Browser';
-            $this->data->browser->version = null;
-        }
+			$this->data->os->reset();
+		}
 
-        $this->data->browser->mode = 'proxy';
-        $this->data->engine->reset([ 'name' => 'Gecko' ]);
+		if ( ! isset( $this->data->browser->name ) || 'UC Browser' != $this->data->browser->name ) {
+			$this->data->browser->name = 'UC Browser';
+			$this->data->browser->version = null;
+		}
 
-        $extra = new Parser([ 'headers' => [ 'User-Agent' => $header ]]);
-        
-        if ($extra->device->type != Constants\DeviceType::DESKTOP) {
-            if ($extra->os->getName() !== '' && ($this->data->os->getName() === '' || $extra->os->getVersion() !== '')) {
-                $this->data->os = $extra->os;
-            }
-            if ($extra->device->identified) {
-                $this->data->device = $extra->device;
-            }
-        }
-    }
+		$this->data->browser->mode = 'proxy';
+		$this->data->engine->reset( [ 'name' => 'Gecko' ] );
+
+		$extra = new Parser( [ 'headers' => [ 'User-Agent' => $header ] ] );
+
+		if ( Constants\DeviceType::DESKTOP != $extra->device->type ) {
+			if ( $extra->os->getName() !== '' && ($this->data->os->getName() === '' || $extra->os->getVersion() !== '') ) {
+				$this->data->os = $extra->os;
+			}
+			if ( $extra->device->identified ) {
+				$this->data->device = $extra->device;
+			}
+		}
+	}
 }

@@ -2,18 +2,17 @@
 
 namespace WhichBrowser\Data;
 
-class DeviceProfiles
-{
-    public static $PROFILES = [];
+class DeviceProfiles {
 
-    public static function identify($url)
-    {
-        require_once __DIR__ . '/../../data/profiles.php';
+	public static $PROFILES = [];
 
-        if (isset(self::$PROFILES[$url])) {
-            return self::$PROFILES[$url];
-        }
+	public static function identify( $url ) {
+		require_once __DIR__ . '/../../data/profiles.php';
 
-        return false;
-    }
+		if ( isset( self::$PROFILES[ $url ] ) ) {
+			return self::$PROFILES[ $url ];
+		}
+
+		return false;
+	}
 }
